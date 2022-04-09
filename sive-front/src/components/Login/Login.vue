@@ -35,7 +35,7 @@
         <q-btn
           style="width: 100%"
           label="Ingresar"
-          type="submit"
+          to="/dashboard"
           color="primary"
           push
         />

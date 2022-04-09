@@ -31,6 +31,7 @@ Route::prefix('user')->group(function () {
     Route::delete('/delete/{id}', [UserController::class, 'delete']);
     Route::get('/get/{id}', [UserController::class, 'getUser']);
     Route::get('/list', [UserController::class, 'list']);
+    Route::get('/tipoPersonas', [UserController::class, 'getTiposUsuario']);
 });
 
 Route::prefix('facultad')->group(function () {

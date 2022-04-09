@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TipoPersona;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -103,12 +105,35 @@ class UserController extends Controller
 
     public function list(Request $request)
     {
-        $users = User::paginate($request->per_page);
+        $query = DB::table('users as u')->select('u.id', 'tp.tipo', 'u.nombre', 'u.apellidos', 'u.cedula', 'u.celular', 'u.email')
+            ->join('tipo_personas as tp', 'tp.id', '=', 'u.tipo_personas_id_fk')
+            ->orderBy('u.id', 'desc');
+
+        if ((isset($request->filter) && $request->filter != null) && $request->filter != '' && $request->filter != 'null') {
+            $query->where('u.nombre', 'like', '%' . $request->filter . '%');
+            $query->orWhere('u.apellidos', 'like', '%' . $request->filter . '%');
+            $query->orWhere('u.cedula', 'like', '%' . $request->filter . '%');
+            $query->orWhere('u.celular', 'like', '%' . $request->filter . '%');
+            $query->orWhere('u.email', 'like', '%' . $request->filter . '%');
+        }
+
+        $users = $query->paginate($request->rows, ['*'], 'page', $request->page);
 
         return response([
             "status" => true,
             "message" => "Usuarios obtenidos correctamente.",
             "data" => $users,
         ], 200);
+    }
+
+    public function getTiposUsuario()
+    {
+        $tipoPersonas = TipoPersona::all();
+
+        return response([
+            "status" => true,
+            "message" => "Tipos de usuario obtenidos correctamente.",
+            "data" => $tipoPersonas,
+        ]);
     }
 }
