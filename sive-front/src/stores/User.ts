@@ -4,6 +4,7 @@ export const useUserStore = defineStore("user", {
   state: () => ({
     users: [],
     tipoPersonas: [],
+    user: null,
   }),
   actions: {
     getUsers(page: Number, rowsPerPage: Number, filter: any) {
@@ -49,6 +50,30 @@ export const useUserStore = defineStore("user", {
             resolve(response);
           })
           .catch((error) => reject(error));
+      });
+    },
+    getUser(id: Number) {
+      return new Promise((resolve, reject) => {
+        ServiceApi.get(`/api/user/get/${id}`)
+          .then((response) => {
+            this.user = response.data.data;
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    },
+    updateUser(user: any) {
+      return new Promise((resolve, reject) => {
+        ServiceApi.post(`/api/user/update`, user)
+          .then((response) => {
+            console.log("Update usuario:::", response.data);
+            resolve(response);
+          })
+          .catch((error) => {
+            reject(error);
+          });
       });
     },
   },

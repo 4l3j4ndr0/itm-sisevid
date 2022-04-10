@@ -2,7 +2,7 @@
   <q-layout view="lHh lpr lFf" class="shadow-2 rounded-borders">
     <q-card flat bordered class>
       <q-card-section>
-        <div class="text-h6">Crear usuarios</div>
+        <div class="text-h6">Editar usuario</div>
       </q-card-section>
       <q-card-section>
         <q-btn
@@ -17,54 +17,59 @@
       </q-card-section>
       <q-separator inset></q-separator>
       <div class="q-pa-md" style="max-width: 400px">
-        <q-form ref="myForm" @submit="onSubmit" class="q-gutter-md">
+        <q-form
+          ref="myForm"
+          @submit="onSubmit"
+          class="q-gutter-md"
+          v-if="usuario"
+        >
           <q-select
-            v-model="tipo_personas_id_fk"
+            v-model="usuario.tipo_personas_id_fk"
             :options="tipoPersonas"
             label="Tipo de usuario"
           />
           <q-input
-            v-model="nombre"
+            v-model="usuario.nombre"
             label="Nombre"
             lazy-rules
             :rules="[(val) => (val && val.length > 0) || 'Campo requerido.']"
           />
           <q-input
-            v-model="apellidos"
+            v-model="usuario.apellidos"
             label="Apellidos"
             lazy-rules
             :rules="[(val) => (val && val.length > 0) || 'Campo requerido.']"
           />
           <q-input
-            v-model="cedula"
+            v-model="usuario.cedula"
             label="Cédula"
             type="tel"
             lazy-rules
             :rules="[(val) => (val && val.length > 0) || 'Campo requerido.']"
           />
           <q-input
-            v-model="celular"
+            v-model="usuario.celular"
             label="Celular"
             type="tel"
             lazy-rules
             :rules="[(val) => (val && val.length > 0) || 'Campo requerido.']"
           />
           <q-input
-            v-model="email"
+            v-model="usuario.email"
             label="Email"
             type="email"
             lazy-rules
             :rules="[(val) => (val && val.length > 0) || 'Campo requerido.']"
           />
           <q-input
-            v-model="password"
+            v-model="usuario.password"
             label="Contraseña"
             type="password"
             lazy-rules
             :rules="[(val) => (val && val.length > 0) || 'Campo requerido.']"
           />
           <div>
-            <q-btn label="Crear usuario" type="submit" color="primary" />
+            <q-btn label="Guardar cambios" type="submit" color="primary" />
           </div>
         </q-form>
       </div>
@@ -74,63 +79,56 @@
 <script>
 import mixin from "../../mixins/mixin";
 import { useUserStore } from "../../stores/User";
-import { ref, onMounted, computed } from "vue";
-import { useRouter } from "vue-router";
+import { ref, onMounted, computed, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
 export default {
-  name: "UsersCreate",
+  name: "UsersEdit",
   setup(props, { root }) {
     const { showLoading, hideLoading, showNoty } = mixin();
     const router = useRouter();
+    const route = useRoute();
     const myForm = ref(null);
     const user = useUserStore();
 
-    const tipo_personas_id_fk = ref(null);
-    const nombre = ref(null);
-    const apellidos = ref(null);
-    const cedula = ref(null);
-    const celular = ref(null);
-    const email = ref(null);
-    const password = ref(null);
-
     const tipoPersonas = computed(() => {
       return useUserStore().tipoPersonas;
+    });
+
+    const usuario = computed(() => {
+      return useUserStore().user;
     });
 
     const goUsersPage = () => {
       router.push("/users");
     };
 
-    const createUser = () => {
+    onMounted(() => {
+      showLoading("Cargando usuario...");
+      user.getTiposUsuarios();
+      user.getUser(route.params.id).then(() => {
+        hideLoading();
+      });
+    });
+
+    const updateUser = () => {
       user
-        .createUser({
-          tipo_personas_id_fk: tipo_personas_id_fk.value.value,
-          nombre: nombre.value,
-          apellidos: apellidos.value,
-          cedula: cedula.value,
-          celular: celular.value,
-          email: email.value,
-          password: password.value,
-        })
-        .then((response) => {
+        .updateUser(usuario.value)
+        .then(() => {
           hideLoading();
-          showNoty("success", response.data.message);
+          showNoty("success", "Usuario actualizado correctamente.");
           goUsersPage();
         })
-        .catch((error) => {
+        .catch(() => {
           hideLoading();
-          showNoty("error", "Ocurrió un error al crear el usuario.");
+          showNoty("error", "Error al actualizar usuario");
         });
     };
-
-    onMounted(() => {
-      user.getTiposUsuarios();
-    });
 
     const onSubmit = () => {
       myForm.value.validate().then((success) => {
         if (success) {
-          showLoading("Creando usuario...");
-          createUser();
+          showLoading("Guardando información...");
+          updateUser();
         }
       });
     };
@@ -138,15 +136,9 @@ export default {
     return {
       tipoPersonas,
       myForm,
-      tipo_personas_id_fk,
-      nombre,
-      apellidos,
-      cedula,
-      celular,
-      email,
-      password,
       onSubmit,
       router,
+      usuario,
     };
   },
 };

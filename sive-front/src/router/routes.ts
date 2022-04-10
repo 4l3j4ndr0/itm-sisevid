@@ -42,6 +42,17 @@ const routes: RouteRecordRaw[] = [
           },
         },
       },
+      {
+        path: "/users/edit/:id",
+        component: () => import("pages/Users/Edit.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
     ],
   },
 

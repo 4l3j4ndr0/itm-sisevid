@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title class="cursor-pointer" @click="$router.push('/')">
+        <q-toolbar-title class="cursor-pointer" @click="router.push('/')">
           <q-avatar>
             <img src="icons/logo.png" />
           </q-avatar>
@@ -88,6 +88,7 @@ export default {
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
+      router,
     };
   },
 };
