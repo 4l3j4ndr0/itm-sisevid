@@ -95,7 +95,8 @@ export default {
     });
 
     const usuario = computed(() => {
-      return useUserStore().user;
+      let u = useUserStore().user;
+      return u;
     });
 
     const goUsersPage = () => {

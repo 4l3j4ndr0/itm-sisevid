@@ -42,7 +42,49 @@ async function get(url) {
   });
 }
 
+async function remove(url) {
+  //   let token = await sessionStorage.getItem("token");
+  // console.log('EL TOKEN:::', token)
+  return new Promise((resolve, reject) => {
+    axios
+      .delete(`${url}`, {
+        timeout: 60000,
+        headers: {
+          Authorization: `Bearer qqq`,
+        },
+      })
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+async function put(url, data) {
+  //   let token = await sessionStorage.getItem("token");
+  // console.log('EL TOKEN:::', token)
+  return new Promise((resolve, reject) => {
+    axios
+      .put(`${url}`, data, {
+        timeout: 60000,
+        headers: {
+          Authorization: `Bearer qqq`,
+        },
+      })
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
 export default {
   post,
   get,
+  remove,
+  put,
 };

@@ -53,6 +53,39 @@ const routes: RouteRecordRaw[] = [
           },
         },
       },
+      {
+        path: "/facultades",
+        component: () => import("pages/Facultades/Index.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
+      {
+        path: "/facultades/create",
+        component: () => import("pages/Facultades/Create.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
+      {
+        path: "/facultades/edit/:id",
+        component: () => import("pages/Facultades/Edit.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
     ],
   },
 

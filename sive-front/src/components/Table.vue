@@ -7,7 +7,6 @@
         row-key="name"
         :filter="filter"
         @request="onRequest"
-        @row-click="onRowClick"
       >
         <template v-slot:no-data="{ filter }">
           <div class="full-width row flex-center text-red q-gutter-sm">
@@ -36,6 +35,29 @@
               </template>
             </q-input>
           </div>
+        </template>
+        <template v-slot:body="props">
+          <q-tr :props="props">
+            <q-td v-for="column in columns" :key="column.name" :props="props">
+              {{ props.row[column.name] }}
+            </q-td>
+            <q-td class="q-gutter-sm">
+              <q-btn
+                @click="$emit('edit', props.row)"
+                round
+                push
+                color="blue"
+                icon="edit"
+              />
+              <q-btn
+                @click="$emit('delete', props.row)"
+                round
+                push
+                color="red"
+                icon="delete"
+              />
+            </q-td>
+          </q-tr>
         </template>
       </q-table>
     </q-card-section>
@@ -75,7 +97,7 @@ export default {
       this.$emit("request", { page, rowsPerPage, filter: this.filter });
     },
     onRowClick(evt, row) {
-      this.$emit("rowClick", row.id);
+      this.$emit("rowClick", row);
     },
   },
 };

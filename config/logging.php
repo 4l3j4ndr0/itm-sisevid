@@ -1,8 +1,11 @@
 <?php
 
+use Elastic\Elasticsearch\ClientBuilder;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
+use Monolog\Handler\ElasticsearchHandler;
+use Monolog\Formatter\ElasticsearchFormatter;
 
 return [
 
@@ -50,8 +53,22 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'elasticsearch'],
             'ignore_exceptions' => false,
+        ],
+
+        'elasticsearch' => [
+            'driver'         => 'monolog',
+            'level'          => 'debug',
+            'handler'        => ElasticsearchHandler::class,
+            'formatter'      => ElasticsearchFormatter::class,
+            'formatter_with' => [
+                'index' => env('ELASTIC_LOGS_INDEX'),
+                'type'  => '_doc',
+            ],
+            'handler_with'   => [
+                'client' => ClientBuilder::create()->setHosts([env('ELASTIC_HOST')])->setBasicAuthentication(env('ELASTIC_USER'), env('ELATIS_PASSWORD'))->build(),
+            ],
         ],
 
         'single' => [
@@ -82,7 +99,7 @@ return [
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
+                'connectionString' => 'tls://' . env('PAPERTRAIL_URL') . ':' . env('PAPERTRAIL_PORT'),
             ],
         ],
 

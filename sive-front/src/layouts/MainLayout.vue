@@ -43,7 +43,7 @@
             <q-list padding>
               <q-item
                 active-class="tab-active"
-                to="users"
+                to="/users"
                 exact
                 class="q-ma-sm navigation-item"
                 clickable
@@ -54,6 +54,20 @@
                 </q-item-section>
 
                 <q-item-section> Usuarios </q-item-section>
+              </q-item>
+              <q-item
+                active-class="tab-active"
+                to="/facultades"
+                exact
+                class="q-ma-sm navigation-item"
+                clickable
+                v-ripple
+              >
+                <q-item-section avatar>
+                  <q-icon name="school" />
+                </q-item-section>
+
+                <q-item-section> Facultades </q-item-section>
               </q-item>
             </q-list>
           </q-scroll-area>

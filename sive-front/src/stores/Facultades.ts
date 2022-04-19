@@ -1,20 +1,20 @@
 import { defineStore } from "pinia";
 import ServiceApi from "../Helpers/ServiceApi";
-export const useUserStore = defineStore("user", {
+export const useFacultadesStore = defineStore("facultad", {
   state: () => ({
-    users: [],
-    tipoPersonas: [],
-    user: null,
+    facultades: [],
+    decanos: [],
+    facultad: null,
   }),
   actions: {
-    getUsers(page: Number, rowsPerPage: Number, filter: any) {
+    getFacultades(page: Number, rowsPerPage: Number, filter: any) {
       return new Promise((resolve, reject) => {
         ServiceApi.get(
-          `/api/user/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
+          `/api/facultad/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
         )
           .then((response) => {
-            // console.log("RESPUESTA USERS:::", response.data);
-            this.users = response.data.data.data;
+            console.log("RESPUESTA FACULTADES:::", response.data);
+            this.facultades = response.data.data.data;
             resolve(true);
           })
           .catch((error) => {
@@ -23,40 +23,34 @@ export const useUserStore = defineStore("user", {
           });
       });
     },
-    getTiposUsuarios() {
+    getDecanos() {
       return new Promise((resolve, reject) => {
-        ServiceApi.get(`/api/user/tipoPersonas`)
+        ServiceApi.get(`/api/facultad/decanos`)
           .then((response) => {
-            const tipoPersonas = response.data.data;
-            let newList: any = [];
-            tipoPersonas.map((tp: any) => {
-              newList.push({
-                value: tp.id,
-                label: tp.tipo,
-              });
-            });
-            this.tipoPersonas = newList;
+            console.log("RESPUESTA DECANOS:::", response.data);
+            this.decanos = response.data.data;
             resolve(true);
           })
           .catch((error) => {
+            // console.log("ERROR USERS:::", error);
             reject(error);
           });
       });
     },
-    createUser(user: any) {
+    createFacultad(facultad: any) {
       return new Promise((resolve, reject) => {
-        ServiceApi.post(`/api/user/create`, user)
+        ServiceApi.post(`/api/facultad/create`, facultad)
           .then((response) => {
             resolve(response);
           })
           .catch((error) => reject(error));
       });
     },
-    getUser(id: Number) {
+    getFacultad(id: Number) {
       return new Promise((resolve, reject) => {
-        ServiceApi.get(`/api/user/get/${id}`)
+        ServiceApi.get(`/api/facultad/get/${id}`)
           .then((response) => {
-            this.user = response.data.data;
+            this.facultad = response.data.data;
             resolve(response);
           })
           .catch((error) => {
@@ -64,12 +58,13 @@ export const useUserStore = defineStore("user", {
           });
       });
     },
-    updateUser(user: any) {
-      user.tipo_personas_id_fk = user.tipo_personas_id_fk.value;
+    updateFacultad(facultad: any) {
+      facultad.decano_id_fk = facultad.decano_id_fk.value;
+      facultad.facultad = facultad.facultad.toUpperCase();
       return new Promise((resolve, reject) => {
-        ServiceApi.put(`/api/user/update`, user)
+        ServiceApi.put(`/api/facultad/update`, facultad)
           .then((response) => {
-            console.log("Update usuario:::", response.data);
+            console.log("Update facultad:::", response.data);
             resolve(response);
           })
           .catch((error) => {
@@ -77,9 +72,9 @@ export const useUserStore = defineStore("user", {
           });
       });
     },
-    deleteUser(id: Number) {
+    deleteFacultad(id: Number) {
       return new Promise((resolve, reject) => {
-        ServiceApi.remove(`/api/user/delete/${id}`)
+        ServiceApi.remove(`/api/facultad/delete/${id}`)
           .then((response) => {
             resolve(response);
           })

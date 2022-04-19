@@ -15,7 +15,6 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'tipo_personas_id_fk' => 'required',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6',
             'nombre' => 'required|max:255',
             'apellidos' => 'required|max:255',
             'cedula' => 'required|max:255',
@@ -29,7 +28,7 @@ class UserController extends Controller
         $user = User::create([
             'tipo_personas_id_fk' => $request->tipo_personas_id_fk,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => $request->celular,
             'nombre' => $request->nombre,
             'apellidos' => $request->apellidos,
             'cedula' => $request->cedula,
@@ -95,6 +94,13 @@ class UserController extends Controller
     public function getUser(int $id)
     {
         $user = User::find($id);
+
+        $typePerson = TipoPersona::find($user->tipo_personas_id_fk);
+
+        $user->tipo_personas_id_fk = [
+            "label" => $typePerson->tipo,
+            "value" => $typePerson->id,
+        ];
 
         return response([
             "status" => true,

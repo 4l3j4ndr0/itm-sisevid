@@ -19,7 +19,8 @@
         @request="
           ({ page, rowsPerPage, filter }) => getUsers(page, rowsPerPage, filter)
         "
-        @rowClick="goEditUserPage"
+        @edit="(user) => router.push('/users/edit/' + user.id)"
+        @delete="(user) => deleteUser(user)"
         :columns="columns"
         :data="users"
       ></Table>
@@ -32,12 +33,14 @@ import mixin from "../../mixins/mixin";
 import { useUserStore } from "../../stores/User";
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
+import { useQuasar } from "quasar";
 export default {
   name: "Users",
   components: {
     Table,
   },
   setup() {
+    const $q = useQuasar();
     const { showLoading, hideLoading, showNoty } = mixin();
     const user = useUserStore();
     const router = useRouter();
@@ -45,6 +48,7 @@ export default {
       return useUserStore().users;
     });
     const columns = ref([
+      { name: "id", label: "Id", field: "id" },
       { name: "tipo", label: "Tipo de usuario", field: "tipo" },
       { name: "nombre", label: "Nombre", field: "nombre" },
       { name: "apellidos", label: "Apellidos", field: "apellidos" },
@@ -66,19 +70,49 @@ export default {
         });
     };
 
-    const goEditUserPage = (id) => {
-      router.push(`/users/edit/${id}`);
-    };
-
     onMounted(() => {
       getUsers();
     });
+
+    const deleteUser = (element) => {
+      $q.dialog({
+        title: "Eliminar usuario",
+        message: `Esta seguro de querer eliminar el usuario ${element.nombre} ${element.apellidos}?`,
+        cancel: {
+          label: "Cancelar",
+          color: "blue",
+        },
+        ok: {
+          label: "Eliminar",
+          color: "red",
+          push: true,
+        },
+        persistent: true,
+      })
+        .onOk(() => {
+          showLoading("Eliminando usuario...");
+          user
+            .deleteUser(element.id)
+            .then((response) => {
+              hideLoading();
+              showNoty("success", "Usuario eliminado correctamente.");
+              getUsers();
+            })
+            .catch((error) => {
+              console.log("ERROR:::::", error);
+              showNoty("error", "Ocurrió un error al eliminar el usuario.");
+              hideLoading();
+            });
+        })
+        .onCancel(() => {});
+    };
 
     return {
       columns,
       users,
       getUsers,
-      goEditUserPage,
+      deleteUser,
+      router,
     };
   },
 };

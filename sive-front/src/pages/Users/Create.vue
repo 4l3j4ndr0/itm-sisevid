@@ -56,13 +56,13 @@
             lazy-rules
             :rules="[(val) => (val && val.length > 0) || 'Campo requerido.']"
           />
-          <q-input
+          <!-- <q-input
             v-model="password"
             label="Contraseña"
             type="password"
             lazy-rules
             :rules="[(val) => (val && val.length > 0) || 'Campo requerido.']"
-          />
+          /> -->
           <div>
             <q-btn label="Crear usuario" type="submit" color="primary" />
           </div>

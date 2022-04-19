@@ -3,11 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\Facultades;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class FacultadController extends Controller
 {
+
+    function getDecanos()
+    {
+        $decanos = User::where('tipo_personas_id_fk', '=', 3)->get();
+
+        $newDecanos = [];
+
+        foreach ($decanos as $d) {
+            array_push($newDecanos, [
+                'value' => $d->id,
+                'label' => $d->nombre . ' ' . $d->apellidos
+            ]);
+        }
+
+        return response([
+            "status" => true,
+            "message" => "Lista de decanos.",
+            "data" => $newDecanos,
+        ], 200);
+    }
+
     function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -70,6 +93,13 @@ class FacultadController extends Controller
     {
         $facultad = Facultades::find($id);
 
+        $decano = User::find($facultad->decano_id_fk);
+
+        $facultad->decano_id_fk = [
+            'value' => $decano->id,
+            'label' => $decano->nombre . ' ' . $decano->apellidos
+        ];
+
         return response([
             "status" => true,
             "message" => "Facultad encontrada correctamente.",
@@ -79,7 +109,11 @@ class FacultadController extends Controller
 
     public function list(Request $request)
     {
-        $facultades = Facultades::paginate($request->per_page);
+        $query = DB::table('facultades as f')->select('f.id',  'f.facultad')->selectRaw("CONCAT(d.nombre, ' ', d.apellidos) as decano")
+            ->join('users as d', 'd.id', '=', 'f.decano_id_fk')
+            ->orderBy('f.facultad', 'asc');
+
+        $facultades = $query->paginate($request->rows, ['*'], 'page', $request->page);
 
         return response([
             "status" => true,
