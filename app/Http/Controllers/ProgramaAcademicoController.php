@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Facultades;
 use App\Models\ProgramasAcademicos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class ProgramaAcademicoController extends Controller
 {
@@ -70,23 +72,39 @@ class ProgramaAcademicoController extends Controller
 
     public function getPrograma($id)
     {
-        $programa_academico = ProgramasAcademicos::find($id);
+        $programaAcademico = ProgramasAcademicos::find($id);
+
+        $facultad = Facultades::find($programaAcademico->facultad_id_fk);
+
+        $programaAcademico->facultad_id_fk = [
+            'value' => $facultad->id,
+            'label' => $facultad->facultad,
+        ];
 
         return response([
             "status" => true,
             "message" => "Programa academico encontrado correctamente.",
-            "data" => $programa_academico,
+            "data" => $programaAcademico,
         ], 200);
     }
 
     public function list(Request $request)
     {
-        $programas_academicos = ProgramasAcademicos::paginate($request->per_page);
+        $query = DB::table('programas_academicos as p')->select('p.id', 'f.facultad', 'p.programa', 'p.descripcion')
+            ->join('facultades as f', 'f.id', '=', 'p.facultad_id_fk')
+            ->orderBy('p.id', 'desc');
+
+        if ((isset($request->filter) && $request->filter != null) && $request->filter != '' && $request->filter != 'null') {
+            $query->where('f.facultad', 'like', '%' . $request->filter . '%');
+            $query->orWhere('p.programa', 'like', '%' . $request->filter . '%');
+        }
+
+        $programasAcademicos = $query->paginate($request->rows, ['*'], 'page', $request->page);
 
         return response([
             "status" => true,
             "message" => "Programas academicos obtenidos correctamente.",
-            "data" => $programas_academicos,
+            "data" => $programasAcademicos,
         ], 200);
     }
 }

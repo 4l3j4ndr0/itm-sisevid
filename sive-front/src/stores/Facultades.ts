@@ -7,7 +7,11 @@ export const useFacultadesStore = defineStore("facultad", {
     facultad: null,
   }),
   actions: {
-    getFacultades(page: Number, rowsPerPage: Number, filter: any) {
+    getFacultades(
+      page: Number = 1,
+      rowsPerPage: Number = 25,
+      filter: any = null
+    ) {
       return new Promise((resolve, reject) => {
         ServiceApi.get(
           `/api/facultad/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
@@ -15,7 +19,7 @@ export const useFacultadesStore = defineStore("facultad", {
           .then((response) => {
             console.log("RESPUESTA FACULTADES:::", response.data);
             this.facultades = response.data.data.data;
-            resolve(true);
+            resolve(response.data.data.data);
           })
           .catch((error) => {
             // console.log("ERROR USERS:::", error);

@@ -69,6 +69,20 @@
 
                 <q-item-section> Facultades </q-item-section>
               </q-item>
+              <q-item
+                active-class="tab-active"
+                to="/programs"
+                exact
+                class="q-ma-sm navigation-item"
+                clickable
+                v-ripple
+              >
+                <q-item-section avatar>
+                  <q-icon name="menu_book" />
+                </q-item-section>
+
+                <q-item-section> Programas académicos </q-item-section>
+              </q-item>
             </q-list>
           </q-scroll-area>
         </div>

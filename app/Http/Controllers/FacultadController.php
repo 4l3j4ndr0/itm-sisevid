@@ -113,6 +113,10 @@ class FacultadController extends Controller
             ->join('users as d', 'd.id', '=', 'f.decano_id_fk')
             ->orderBy('f.facultad', 'asc');
 
+        if ((isset($request->filter) && $request->filter != null) && $request->filter != '' && $request->filter != 'null') {
+            $query->where('f.facultad', 'like', '%' . $request->filter . '%');
+        }
+
         $facultades = $query->paginate($request->rows, ['*'], 'page', $request->page);
 
         return response([

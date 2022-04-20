@@ -86,6 +86,39 @@ const routes: RouteRecordRaw[] = [
           },
         },
       },
+      {
+        path: "/programs",
+        component: () => import("pages/Programas/Index.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
+      {
+        path: "/programs/create",
+        component: () => import("pages/Programas/Create.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
+      {
+        path: "/programs/edit/:id",
+        component: () => import("pages/Programas/Edit.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
     ],
   },
 

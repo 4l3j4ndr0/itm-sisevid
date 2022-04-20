@@ -7,7 +7,7 @@ export const useUserStore = defineStore("user", {
     user: null,
   }),
   actions: {
-    getUsers(page: Number, rowsPerPage: Number, filter: any) {
+    getUsers(page: Number = 1, rowsPerPage: Number = 25, filter: any) {
       return new Promise((resolve, reject) => {
         ServiceApi.get(
           `/api/user/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
