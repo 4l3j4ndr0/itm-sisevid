@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ciclo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CicloController extends Controller
@@ -22,8 +23,8 @@ class CicloController extends Controller
 
         $ciclo = Ciclo::create([
             'ciclo' => $request->ciclo,
-            'desde' => $request->fecha_inicio,
-            'hasta' => $request->fecha_fin,
+            'desde' => $request->desde,
+            'hasta' => $request->hasta,
         ]);
 
         return response([
@@ -47,8 +48,8 @@ class CicloController extends Controller
 
         $ciclo = Ciclo::find($request->id);
         $ciclo->ciclo = $request->ciclo;
-        $ciclo->desde = $request->fecha_inicio;
-        $ciclo->hasta = $request->fecha_fin;
+        $ciclo->desde = $request->desde;
+        $ciclo->hasta = $request->hasta;
         $ciclo->save();
 
         return response([
@@ -81,9 +82,15 @@ class CicloController extends Controller
         ], 200);
     }
 
-    public function getCiclos(Request $request)
+    public function list(Request $request)
     {
-        $ciclos = Ciclo::paginatere($request->per_page);
+        $query = DB::table('ciclos as c')->select('c.id',  'c.ciclo', 'c.desde', 'c.hasta')->orderBy('c.id', 'desc');
+
+        if ((isset($request->filter) && $request->filter != null) && $request->filter != '' && $request->filter != 'null') {
+            $query->where('c.ciclo', 'like', '%' . $request->filter . '%');
+        }
+
+        $ciclos = $query->paginate($request->rows, ['*'], 'page', $request->page);
 
         return response([
             "status" => true,

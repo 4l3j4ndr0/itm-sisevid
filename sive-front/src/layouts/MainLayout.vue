@@ -83,6 +83,20 @@
 
                 <q-item-section> Programas académicos </q-item-section>
               </q-item>
+              <q-item
+                active-class="tab-active"
+                to="/ciclos"
+                exact
+                class="q-ma-sm navigation-item"
+                clickable
+                v-ripple
+              >
+                <q-item-section avatar>
+                  <q-icon name="insights" />
+                </q-item-section>
+
+                <q-item-section> Ciclos </q-item-section>
+              </q-item>
             </q-list>
           </q-scroll-area>
         </div>

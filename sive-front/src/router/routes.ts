@@ -119,6 +119,39 @@ const routes: RouteRecordRaw[] = [
           },
         },
       },
+      {
+        path: "/ciclos",
+        component: () => import("pages/Ciclos/Index.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
+      {
+        path: "/ciclos/create",
+        component: () => import("pages/Ciclos/Create.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
+      {
+        path: "/ciclos/edit/:id",
+        component: () => import("pages/Ciclos/Edit.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
     ],
   },
 
