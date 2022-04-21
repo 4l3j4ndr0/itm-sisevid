@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asignatura;
+use App\Models\Ciclo;
+use App\Models\ProgramasAcademicos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class AsignaturaController extends Controller
@@ -74,9 +77,23 @@ class AsignaturaController extends Controller
         ], 200);
     }
 
-    public function getAsignatira(int $id)
+    public function getAsignatura(int $id)
     {
         $asignatura = Asignatura::find($id);
+
+        $programa = ProgramasAcademicos::find($asignatura->programa_id_fk);
+
+        $ciclo = Ciclo::find($asignatura->ciclo_id_fk);
+
+        $asignatura->programa_id_fk = [
+            'value' => $programa->id,
+            'label' => $programa->programa,
+        ];
+
+        $asignatura->ciclo_id_fk = [
+            'value' => $ciclo->id,
+            'label' => $ciclo->ciclo,
+        ];
 
         return response([
             "status" => true,
@@ -87,7 +104,19 @@ class AsignaturaController extends Controller
 
     public function list(Request $request)
     {
-        $asignaturas = Asignatura::paginate($request->per_page);
+        $query = DB::table('asignaturas as a')->select('a.id', 'pa.programa', 'c.ciclo', 'a.asignatura', 'a.creditos')
+            ->join('programas_academicos as pa', 'pa.id', '=', 'a.programa_id_fk')
+            ->join('ciclos as c', 'c.id', '=', 'a.ciclo_id_fk')
+            ->orderBy('a.id', 'desc');
+
+        if ((isset($request->filter) && $request->filter != null) && $request->filter != '' && $request->filter != 'null') {
+            $query->where('pa.programa', 'like', '%' . $request->filter . '%');
+            $query->orWhere('c.ciclo', 'like', '%' . $request->filter . '%');
+            $query->orWhere('a.asignatura', 'like', '%' . $request->filter . '%');
+            $query->orWhere('a.creditos', 'like', '%' . $request->filter . '%');
+        }
+
+        $asignaturas = $query->paginate($request->rows, ['*'], 'page', $request->page);
 
         return response([
             "status" => true,

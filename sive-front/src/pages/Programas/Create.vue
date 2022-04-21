@@ -25,7 +25,6 @@
             label="Seleccione la facultad"
             :options="facultadesList"
             @filter="onFilter"
-            style="width: 250px"
           >
             <template v-slot:no-option>
               <q-item>

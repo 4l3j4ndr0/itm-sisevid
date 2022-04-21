@@ -1,20 +1,20 @@
 import { defineStore } from "pinia";
 import ServiceApi from "../Helpers/ServiceApi";
-export const useProgramsStore = defineStore("programas-academicos", {
+export const useAsignaturasStore = defineStore("asignaturas", {
   state: () => ({
-    programas: [],
-    programa: null,
+    asignaturas: [],
+    asignatura: null,
   }),
   actions: {
-    getProgramas(page: Number = 1, rowsPerPage: Number = 25, filter: any) {
+    getAsignaturas(page: Number = 1, rowsPerPage: Number = 25, filter: any) {
       return new Promise((resolve, reject) => {
         ServiceApi.get(
-          `/api/programa/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
+          `/api/asignatura/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
         )
           .then((response) => {
-            // console.log("RESPUESTA PROGRAMAS:::", response.data);
-            this.programas = response.data.data.data;
-            resolve(response.data.data.data);
+            console.log("RESPUESTA ASIGNATURAS:::", response.data);
+            this.asignaturas = response.data.data.data;
+            resolve(true);
           })
           .catch((error) => {
             // console.log("ERROR USERS:::", error);
@@ -22,21 +22,21 @@ export const useProgramsStore = defineStore("programas-academicos", {
           });
       });
     },
-    createProgram(program: any) {
+    createAsignatura(asignatura: any) {
       return new Promise((resolve, reject) => {
-        ServiceApi.post(`/api/programa/create`, program)
+        ServiceApi.post(`/api/asignatura/create`, asignatura)
           .then((response) => {
             resolve(response);
           })
           .catch((error) => reject(error));
       });
     },
-    getProgram(id: Number) {
+    getAsignatura(id: Number) {
       return new Promise((resolve, reject) => {
-        ServiceApi.get(`/api/programa/get/${id}`)
+        ServiceApi.get(`/api/asignatura/get/${id}`)
           .then((response) => {
             // console.log("EL PROGRAMA:::::", response.data.data);
-            this.programa = response.data.data;
+            this.asignatura = response.data.data;
             resolve(response);
           })
           .catch((error) => {
@@ -44,13 +44,15 @@ export const useProgramsStore = defineStore("programas-academicos", {
           });
       });
     },
-    updatePrograma(programa: any) {
-      programa.facultad_id_fk = programa.facultad_id_fk.value;
-      programa.programa = programa.programa.toUpperCase();
+    updateAsignatura(asignatura: any) {
+      asignatura.ciclo_id_fk = asignatura.ciclo_id_fk.value;
+      asignatura.programa_id_fk = asignatura.programa_id_fk.value;
+      asignatura.asignatura = asignatura.asignatura.toUpperCase();
+      asignatura.creditos = parseInt(asignatura.creditos);
       return new Promise((resolve, reject) => {
-        ServiceApi.put(`/api/programa/update`, programa)
+        ServiceApi.put(`/api/asignatura/update`, asignatura)
           .then((response) => {
-            console.log("Update programa:::", response.data);
+            console.log("Update asignatura:::", response.data);
             resolve(response);
           })
           .catch((error) => {
@@ -58,9 +60,9 @@ export const useProgramsStore = defineStore("programas-academicos", {
           });
       });
     },
-    deletePrograma(id: Number) {
+    deleteAsignatura(id: Number) {
       return new Promise((resolve, reject) => {
-        ServiceApi.remove(`/api/programa/delete/${id}`)
+        ServiceApi.remove(`/api/asignatura/delete/${id}`)
           .then((response) => {
             resolve(response);
           })

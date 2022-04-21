@@ -152,6 +152,39 @@ const routes: RouteRecordRaw[] = [
           },
         },
       },
+      {
+        path: "/asignaturas",
+        component: () => import("pages/Asignaturas/Index.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
+      {
+        path: "/asignaturas/create",
+        component: () => import("pages/Asignaturas/Create.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
+      {
+        path: "/asignaturas/edit/:id",
+        component: () => import("pages/Asignaturas/Edit.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
     ],
   },
 
