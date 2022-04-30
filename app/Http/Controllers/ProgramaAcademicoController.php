@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Condicion;
 use App\Models\Facultades;
 use App\Models\ProgramasAcademicos;
 use Illuminate\Http\Request;
@@ -105,6 +106,29 @@ class ProgramaAcademicoController extends Controller
             "status" => true,
             "message" => "Programas academicos obtenidos correctamente.",
             "data" => $programasAcademicos,
+        ], 200);
+    }
+
+    public function getCondiciones(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'programa_academico_id_fk' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response($validator->errors(), 400);
+        }
+
+        $condiciones = DB::table('condiciones as c')
+            ->select('c.id', 'c.condicion', 'ca.codigo as capitulo')
+            ->join('capitulos as ca', 'ca.id', '=', 'c.capitulo_id_fk')
+            ->where('c.programa_academico_id_fk', $request->programa_academico_id_fk)
+            ->get();
+
+        return response([
+            "status" => true,
+            "message" => "Condiciones consultadas de manera exitosa.",
+            "data" => $condiciones,
         ], 200);
     }
 }

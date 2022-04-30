@@ -2,87 +2,81 @@
   <q-layout view="lHh lpr lFf" class="shadow-2 rounded-borders">
     <q-card flat bordered class>
       <q-card-section>
-        <div class="text-h6">Programas académicos</div>
+        <div class="text-h6">Condiciones</div>
       </q-card-section>
       <q-card-section>
         <q-btn
-          @click="$router.push('/programs/create')"
+          @click="$router.push('/condiciones/create')"
           color="primary"
-          label="Crear programa académico"
+          label="Crear condición"
           no-caps
           icon="add"
           push
         />
       </q-card-section>
       <q-separator inset></q-separator>
-      <TablePrograms
+      <Table
         @request="
           ({ page, rowsPerPage, filter }) =>
-            getProgramas(page, rowsPerPage, filter)
+            getCondiciones(page, rowsPerPage, filter)
         "
-        @edit="(programa) => router.push('/programs/edit/' + programa.id)"
-        @delete="(programa) => deletePrograma(programa)"
+        @edit="(condicion) => router.push('/condiciones/edit/' + condicion.id)"
+        @delete="(condicion) => deleteCondicion(condicion)"
         :columns="columns"
-        :data="programasList"
-        :pagination="pagination"
-      ></TablePrograms>
+        :data="condicionesList"
+      ></Table>
     </q-card>
   </q-layout>
 </template>
 <script>
-import TablePrograms from "../../components/TablePrograms.vue";
+import Table from "../../components/Table.vue";
 import mixin from "../../mixins/mixin";
-import { useProgramsStore } from "../../stores/Programas";
+import { useCondicionesStore } from "../../stores/Condiciones";
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 export default {
-  name: "ProgramasAcademicos",
+  name: "Condiciones",
   components: {
-    TablePrograms,
+    Table,
   },
   setup() {
     const $q = useQuasar();
     const { showLoading, hideLoading, showNoty } = mixin();
-    const programas = useProgramsStore();
+    const condiciones = useCondicionesStore();
     const router = useRouter();
-    const programasList = computed(() => {
-      return useProgramsStore().programas;
-    });
-    const pagination = computed(() => {
-      return useProgramsStore().pagination;
+    const condicionesList = computed(() => {
+      return useCondicionesStore().condiciones;
     });
     const columns = ref([
       { name: "id", label: "Id", field: "id" },
-      { name: "facultad", label: "Facultad", field: "facultad" },
       { name: "programa", label: "Programa académico", field: "programa" },
+      { name: "capitulo", label: "Capítulo", field: "capitulo" },
+      { name: "condicion", label: "Condición", field: "condicion" },
       { name: "descripcion", label: "Descripción", field: "descripcion" },
     ]);
 
-    const getProgramas = (page = 1, rowsPerPage = 50, filter = null) => {
-      showLoading("Consultando programas académicos...");
-      programas
-        .getProgramas(page, rowsPerPage, filter)
+    const getCondiciones = (page = 1, rowsPerPage = 50, filter = null) => {
+      showLoading("Consultando condiciones...");
+      condiciones
+        .getCondiciones(page, rowsPerPage, filter)
         .then((response) => {
           hideLoading();
         })
         .catch((error) => {
-          showNoty(
-            "error",
-            "Ocurrió un error al consultar los programas académicos."
-          );
+          showNoty("error", "Ocurrió un error al consultar las condiciones.");
           hideLoading();
         });
     };
 
     onMounted(() => {
-      getProgramas();
+      getCondiciones();
     });
 
-    const deletePrograma = (element) => {
+    const deleteCondicion = (element) => {
       $q.dialog({
-        title: "Eliminar programa",
-        message: `Esta seguro de querer eliminar el programa académico ${element.programa}?`,
+        title: "Eliminar condición",
+        message: `Esta seguro de querer eliminar la condición ${element.condicion}?`,
         cancel: {
           label: "Cancelar",
           color: "blue",
@@ -95,20 +89,17 @@ export default {
         persistent: true,
       })
         .onOk(() => {
-          showLoading("Eliminando facultad...");
+          showLoading("Eliminando condición...");
           programas
             .deletePrograma(element.id)
             .then((response) => {
               hideLoading();
               showNoty("success", response.data.message);
-              getFacultades();
+              getCondiciones();
             })
             .catch((error) => {
               hideLoading();
-              showNoty(
-                "error",
-                "Ocurrió un error al eliminar el programa académico."
-              );
+              showNoty("error", "Ocurrió un error al eliminar la condición.");
             });
         })
         .onCancel(() => {});
@@ -117,11 +108,9 @@ export default {
     return {
       router,
       columns,
-      programas,
-      getProgramas,
-      deletePrograma,
-      programasList,
-      pagination,
+      getCondiciones,
+      deleteCondicion,
+      condicionesList,
     };
   },
 };

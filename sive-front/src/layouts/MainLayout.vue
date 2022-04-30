@@ -85,6 +85,20 @@
               </q-item>
               <q-item
                 active-class="tab-active"
+                to="/capitulos"
+                exact
+                class="q-ma-sm navigation-item"
+                clickable
+                v-ripple
+              >
+                <q-item-section avatar>
+                  <q-icon name="menu" />
+                </q-item-section>
+
+                <q-item-section> Capítulos </q-item-section>
+              </q-item>
+              <q-item
+                active-class="tab-active"
                 to="/ciclos"
                 exact
                 class="q-ma-sm navigation-item"

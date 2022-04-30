@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Condicion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CondicionController extends Controller
@@ -85,7 +86,18 @@ class CondicionController extends Controller
 
     public function list(Request $request)
     {
-        $condiciones = Condicion::paginate($request->per_page);
+        $query = DB::table('condiciones as c')->select('c.id',  'pa.programa', 'ca.codigo as capitulo', 'c.condicion', 'c.descripcion')
+            ->join('capitulos as ca', 'ca.id', '=', 'c.capitulo_id_fk')
+            ->join('programa_academicos as pa', 'pa.id', '=', 'c.programa_academico_id_fk')
+            ->orderBy('c.id', 'desc');
+
+        if ((isset($request->filter) && $request->filter != null) && $request->filter != '' && $request->filter != 'null') {
+            $query->where('pa.programa', 'like', '%' . $request->filter . '%');
+            $query->orWhere('ca.codigo', 'like', '%' . $request->filter . '%');
+            $query->orWhere('c.condicion', 'like', '%' . $request->filter . '%');
+        }
+
+        $condiciones = $query->paginate($request->rows, ['*'], 'page', $request->page);
 
         return response([
             "status" => true,

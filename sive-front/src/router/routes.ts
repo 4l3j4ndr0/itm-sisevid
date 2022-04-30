@@ -185,6 +185,61 @@ const routes: RouteRecordRaw[] = [
           },
         },
       },
+      {
+        path: "/capitulos",
+        component: () => import("pages/Capitulos/Index.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
+      {
+        path: "/capitulos/create",
+        component: () => import("pages/Capitulos/Create.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
+      {
+        path: "/capitulos/edit/:id",
+        component: () => import("pages/Capitulos/Edit.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
+      {
+        path: "/condiciones/create/:program_id/:program_name",
+        component: () => import("pages/Condiciones/Create.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
+      {
+        path: "/condiciones/edit/:id",
+        component: () => import("pages/Condiciones/Edit.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
     ],
   },
 

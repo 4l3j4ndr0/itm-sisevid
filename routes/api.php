@@ -60,6 +60,7 @@ Route::middleware([LogMiddleware::class])->group(function () {
         Route::delete('/delete/{id}', [ProgramaAcademicoController::class, 'delete']);
         Route::get('/get/{id}', [ProgramaAcademicoController::class, 'getPrograma']);
         Route::get('/list', [ProgramaAcademicoController::class, 'list']);
+        Route::post('/get/condiciones', [ProgramaAcademicoController::class, 'getCondiciones']);
     });
 
     Route::prefix('condicion')->group(function () {

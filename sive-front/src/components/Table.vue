@@ -7,6 +7,7 @@
         row-key="name"
         :filter="filter"
         @request="onRequest"
+        :hide-pagination="hidePagination"
       >
         <template v-slot:no-data="{ filter }">
           <div class="full-width row flex-center text-red q-gutter-sm">
@@ -23,6 +24,7 @@
         <template v-slot:top-right="props">
           <div class="row q-gutter-md q-pt-md">
             <q-input
+              v-if="!hideSearch"
               dense
               borderless
               debounce="300"
@@ -45,6 +47,7 @@
               <q-btn
                 @click="$emit('edit', props.row)"
                 round
+                dense
                 push
                 color="blue"
                 icon="edit"
@@ -52,6 +55,7 @@
               <q-btn
                 @click="$emit('delete', props.row)"
                 round
+                dense
                 push
                 color="red"
                 icon="delete"
@@ -75,6 +79,14 @@ export default {
       type: Array,
       default: [],
       required: true,
+    },
+    hideSearch: {
+      type: Boolean,
+      default: false,
+    },
+    hidePagination: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

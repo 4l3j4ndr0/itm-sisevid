@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Capitulo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CapituloController extends Controller
@@ -85,7 +86,16 @@ class CapituloController extends Controller
 
     public function list(Request $request)
     {
-        $capitulos = Capitulo::paginate($request->per_page);
+        $query = DB::table('capitulos as c')->select('c.id',  'c.codigo as capitulo', 'c.descripcion')->orderBy('c.id', 'desc');
+
+        if ((isset($request->filter) && $request->filter != null) && $request->filter != '' && $request->filter != 'null') {
+            $query->where('c.codigo', 'like', '%' . $request->filter . '%');
+        }
+
+        $query->leftJoin('condiciones as co', 'co.capitulo_id_fk', '=', 'c.id')
+            ->where('co.id', '=', null);
+
+        $capitulos = $query->paginate($request->rows, ['*'], 'page', $request->page);
 
         return response([
             "status" => true,

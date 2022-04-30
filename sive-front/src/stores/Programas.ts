@@ -4,6 +4,10 @@ export const useProgramsStore = defineStore("programas-academicos", {
   state: () => ({
     programas: [],
     programa: null,
+    pagination: {
+      current_page: "",
+      last_page: "",
+    },
   }),
   actions: {
     getProgramas(page: Number = 1, rowsPerPage: Number = 25, filter: any) {
@@ -12,9 +16,24 @@ export const useProgramsStore = defineStore("programas-academicos", {
           `/api/programa/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
         )
           .then((response) => {
-            // console.log("RESPUESTA PROGRAMAS:::", response.data);
             this.programas = response.data.data.data;
+            this.pagination.current_page = response.data.data.current_page;
+            this.pagination.last_page = response.data.data.last_page;
             resolve(response.data.data.data);
+          })
+          .catch((error) => {
+            // console.log("ERROR USERS:::", error);
+            reject(error);
+          });
+      });
+    },
+    getCondiciones(programa_academico_id_fk: Number) {
+      return new Promise((resolve, reject) => {
+        ServiceApi.post(`/api/programa/get/condiciones`, {
+          programa_academico_id_fk,
+        })
+          .then((response) => {
+            resolve(response.data.data);
           })
           .catch((error) => {
             // console.log("ERROR USERS:::", error);

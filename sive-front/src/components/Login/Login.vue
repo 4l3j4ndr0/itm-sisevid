@@ -21,7 +21,7 @@
         lazy-rules
         :rules="[(val) => (val && val !== '') || `Campo requerido.`]"
       />
-      <div style="text-align: center" class="q-gutter-sm justify-center">
+      <!-- <div style="text-align: center" class="q-gutter-sm justify-center">
         <p class="text-grey-6">
           <a
             style="cursor: pointer; text-decoration: underline"
@@ -29,7 +29,7 @@
             >Olvidó la contraseña?</a
           >
         </p>
-      </div>
+      </div> -->
 
       <div class="items-center">
         <q-btn
@@ -40,7 +40,7 @@
           push
         />
       </div>
-      <q-card-section>
+      <!-- <q-card-section>
         <div class="text-center q-gutter-sm">
           <p class="text-grey-6">Proveedores de autenticación</p>
           <q-btn round color="red-8" @click="registerProvider('google')">
@@ -50,7 +50,7 @@
             <q-icon name="fab fa-github" size="1.2rem" />
           </q-btn>
         </div>
-      </q-card-section>
+      </q-card-section> -->
     </q-form>
   </q-card-section>
 </template>
