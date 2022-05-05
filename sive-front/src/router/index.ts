@@ -5,9 +5,10 @@ import {
   createWebHashHistory,
   createWebHistory,
 } from "vue-router";
-
+import ApiService from "src/Helpers/ApiService";
 import routes from "./routes";
-
+import { useUserStore } from "../stores/User";
+import { useQuasar } from "quasar";
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation;
@@ -17,7 +18,9 @@ import routes from "./routes";
  * with the Router instance.
  */
 
-export default route(function (/* { store, ssrContext } */) {
+export default route(function ({ store }) {
+  const user = useUserStore();
+  const $q = useQuasar();
   const createHistory = process.env.SERVER
     ? createMemoryHistory
     : process.env.VUE_ROUTER_MODE === "history"
@@ -34,29 +37,24 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
 
-  // Router.beforeEach((to, from, next) => {
-  // if (to.path !== "/login" && to.path !== "/registro") {
-  //   ServiceApi.post("/validate", {
-  //     token: sessionStorage.getItem("token") | null,
-  //   })
-  //     .then((response) => {
-  //       if (!response.data.status) {
-  //         next({
-  //           path: "/login",
-  //         });
-  //       } else {
-  //         next();
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       next({
-  //         path: "/login",
-  //       });
-  //     });
-  // } else {
-  //   next();
-  // }
-  // });
+  Router.beforeEach((to, from, next) => {
+    if (to.path !== "/login") {
+      if (user.bearer_token) {
+        next();
+      } else {
+        next({
+          path: "/login",
+        });
+      }
+    } else {
+      if (to.path === "/login" && user.bearer_token) {
+        next({
+          path: "/dashboard",
+        });
+      }
+      next();
+    }
+  });
 
   return Router;
 });

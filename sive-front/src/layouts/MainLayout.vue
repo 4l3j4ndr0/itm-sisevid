@@ -10,13 +10,7 @@
           </q-avatar>
           SISEVID - Software de evidencia de actividades.
         </q-toolbar-title>
-        <q-btn
-          @click="router.push('login')"
-          flat
-          round
-          dense
-          icon="fas fa-sign-out-alt"
-        />
+        <q-btn @click="logOut()" flat round dense icon="fas fa-sign-out-alt" />
       </q-toolbar>
     </q-header>
 
@@ -147,11 +141,32 @@
 <script>
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import { useUserStore } from "../stores/User";
+import { useQuasar } from "quasar";
+import mixin from "../mixins/mixin";
 export default {
   name: "MainLayout",
   setup() {
+    const $q = useQuasar();
+    const user = useUserStore();
+    const { showLoading, hideLoading, showNoty } = mixin();
     const leftDrawerOpen = ref(true);
     const router = useRouter();
+
+    const logOut = () => {
+      showLoading("Cerrando sesión...");
+      user
+        .logOut()
+        .then((response) => {
+          hideLoading();
+          $q.localStorage.remove("token");
+          router.push("/login");
+        })
+        .catch((error) => {
+          hideLoading();
+          showNoty("error", "Ocurrió un error al cerrar sesión.");
+        });
+    };
 
     return {
       leftDrawerOpen,
@@ -159,6 +174,7 @@ export default {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
       router,
+      logOut,
     };
   },
 };

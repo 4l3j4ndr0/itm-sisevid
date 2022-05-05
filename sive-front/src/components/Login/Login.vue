@@ -1,16 +1,14 @@
 <template>
   <q-card-section class="animated slideInLeft">
-    <q-form ref="onLogin" @submit="onSubmit" class="q-gutter-md">
+    <q-form ref="myForm" @submit="onSubmit" class="q-gutter-md">
       <q-input
         filled
         v-model="email"
         label="email"
         dense
         lazy-rules
-        :rules="[
-          (val) => (val && val !== '') || `Campo requerido.`,
-          (val) => validateEmail(val) || `Debe ser un email válido.`,
-        ]"
+        type="email"
+        :rules="[(val) => (val && val !== '') || `Campo requerido.`]"
       />
       <q-input
         type="password"
@@ -35,7 +33,7 @@
         <q-btn
           style="width: 100%"
           label="Ingresar"
-          to="/dashboard"
+          type="submit"
           color="primary"
           push
         />
@@ -57,74 +55,49 @@
 
 <script type="text/javascript"></script>
 <script>
-import { Loading, Noty, Auxiliars } from "../../mixins/index";
+import mixin from "../../mixins/mixin";
+import { useUserStore } from "../../stores/User";
+import { ref, onMounted, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useQuasar } from "quasar";
 export default {
   name: "login-login",
-  mixins: [Loading, Noty, Auxiliars],
-  components: {},
-  data() {
-    return {
-      persistSession: false,
-      email: null,
-      password: null,
-    };
-  },
-  methods: {
-    onSubmit() {
-      this.$refs.onLogin.validate().then((success) => {
+  setup() {
+    const $q = useQuasar();
+    const router = useRouter();
+    const { showLoading, hideLoading, showNoty } = mixin();
+    const user = useUserStore();
+
+    const myForm = ref(null);
+
+    const email = ref(null);
+    const password = ref(null);
+
+    const onSubmit = () => {
+      myForm.value.validate().then((success) => {
         if (success) {
-          this.showLoading("Iniciando sesión...");
-          if (this.persistSession) {
-            this.$loginPersistence(this.email, this.password)
-              .then((user) => {
-                this.hideLoading();
-                this.redirectToDashboard(user);
-              })
-              .catch((e) => {
-                this.hideLoading();
-                this.errorLogin();
-              });
-          } else {
-            this.$login(this.email, this.password)
-              .then((user) => {
-                this.hideLoading();
-                this.redirectToDashboard(user);
-              })
-              .catch((e) => {
-                this.hideLoading();
-                this.errorLogin();
-              });
-          }
+          showLoading("Ingresando...");
+          user
+            .login(email.value, password.value)
+            .then((token) => {
+              $q.localStorage.set("token", token);
+              hideLoading();
+              router.push("/dashboard");
+            })
+            .catch((error) => {
+              hideLoading();
+              showNoty("error", error.message);
+            });
         }
       });
-    },
-    registerProvider(provider) {
-      this.$loginWithProvider(provider)
-        .then((user) => {
-          this.redirectToDashboard(user);
-        })
-        .catch((e) => {
-          this.errorLogin(e.message);
-        });
-    },
-    redirectToDashboard(user) {
-      this.NotyHtml(
-        "success",
-        "Sesión iniciada",
-        `Bienvenido ${user.user.displayName ? user.user.displayName : ""}`
-      );
-      this.$router.push("/dashboard");
-    },
-    errorLogin(error = null) {
-      this.Noty(
-        "error",
-        `${
-          error
-            ? error
-            : "Se presentó un error al iniciar sesión, intenta nuevamente."
-        }`
-      );
-    },
+    };
+
+    return {
+      email,
+      myForm,
+      password,
+      onSubmit,
+    };
   },
 };
 </script>

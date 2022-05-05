@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import ServiceApi from "../Helpers/ServiceApi";
+import ApiService from "../Helpers/ApiService";
 export const useCondicionesStore = defineStore("condiciones", {
   state: () => ({
     condiciones: [],
@@ -12,9 +12,10 @@ export const useCondicionesStore = defineStore("condiciones", {
       filter: any = null
     ) {
       return new Promise((resolve, reject) => {
-        ServiceApi.get(
-          `/api/condicion/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
-        )
+        ApiService()
+          .get(
+            `/api/condicion/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
+          )
           .then((response) => {
             console.log("RESPUESTA CONDICIONES:::", response.data);
             this.condiciones = response.data.data.data;
@@ -28,7 +29,8 @@ export const useCondicionesStore = defineStore("condiciones", {
     },
     createCondicion(condicion: any) {
       return new Promise((resolve, reject) => {
-        ServiceApi.post(`/api/condicion/create`, condicion)
+        ApiService()
+          .post(`/api/condicion/create`, condicion)
           .then((response) => {
             resolve(response);
           })
@@ -37,7 +39,8 @@ export const useCondicionesStore = defineStore("condiciones", {
     },
     getCondicion(id: Number) {
       return new Promise((resolve, reject) => {
-        ServiceApi.get(`/api/condicion/get/${id}`)
+        ApiService()
+          .get(`/api/condicion/get/${id}`)
           .then((response) => {
             this.condicion = response.data.data;
             resolve(response);
@@ -49,7 +52,8 @@ export const useCondicionesStore = defineStore("condiciones", {
     },
     updateCondicion(condicion: any) {
       return new Promise((resolve, reject) => {
-        ServiceApi.put(`/api/condicion/update`, condicion)
+        ApiService()
+          .put(`/api/condicion/update`, condicion)
           .then((response) => {
             console.log("Update condicion:::", response.data);
             resolve(response);
@@ -61,7 +65,8 @@ export const useCondicionesStore = defineStore("condiciones", {
     },
     deleteCondicion(id: Number) {
       return new Promise((resolve, reject) => {
-        ServiceApi.remove(`/api/condicion/delete/${id}`)
+        ApiService()
+          .remove(`/api/condicion/delete/${id}`)
           .then((response) => {
             resolve(response);
           })

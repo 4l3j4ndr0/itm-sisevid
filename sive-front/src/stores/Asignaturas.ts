@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import ServiceApi from "../Helpers/ServiceApi";
+import ApiService from "../Helpers/ApiService";
 export const useAsignaturasStore = defineStore("asignaturas", {
   state: () => ({
     asignaturas: [],
@@ -8,9 +8,10 @@ export const useAsignaturasStore = defineStore("asignaturas", {
   actions: {
     getAsignaturas(page: Number = 1, rowsPerPage: Number = 25, filter: any) {
       return new Promise((resolve, reject) => {
-        ServiceApi.get(
-          `/api/asignatura/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
-        )
+        ApiService()
+          .get(
+            `/api/asignatura/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
+          )
           .then((response) => {
             console.log("RESPUESTA ASIGNATURAS:::", response.data);
             this.asignaturas = response.data.data.data;
@@ -24,7 +25,8 @@ export const useAsignaturasStore = defineStore("asignaturas", {
     },
     createAsignatura(asignatura: any) {
       return new Promise((resolve, reject) => {
-        ServiceApi.post(`/api/asignatura/create`, asignatura)
+        ApiService()
+          .post(`/api/asignatura/create`, asignatura)
           .then((response) => {
             resolve(response);
           })
@@ -33,7 +35,8 @@ export const useAsignaturasStore = defineStore("asignaturas", {
     },
     getAsignatura(id: Number) {
       return new Promise((resolve, reject) => {
-        ServiceApi.get(`/api/asignatura/get/${id}`)
+        ApiService()
+          .get(`/api/asignatura/get/${id}`)
           .then((response) => {
             // console.log("EL PROGRAMA:::::", response.data.data);
             this.asignatura = response.data.data;
@@ -50,7 +53,8 @@ export const useAsignaturasStore = defineStore("asignaturas", {
       asignatura.asignatura = asignatura.asignatura.toUpperCase();
       asignatura.creditos = parseInt(asignatura.creditos);
       return new Promise((resolve, reject) => {
-        ServiceApi.put(`/api/asignatura/update`, asignatura)
+        ApiService()
+          .put(`/api/asignatura/update`, asignatura)
           .then((response) => {
             console.log("Update asignatura:::", response.data);
             resolve(response);
@@ -62,7 +66,8 @@ export const useAsignaturasStore = defineStore("asignaturas", {
     },
     deleteAsignatura(id: Number) {
       return new Promise((resolve, reject) => {
-        ServiceApi.remove(`/api/asignatura/delete/${id}`)
+        ApiService()
+          .remove(`/api/asignatura/delete/${id}`)
           .then((response) => {
             resolve(response);
           })

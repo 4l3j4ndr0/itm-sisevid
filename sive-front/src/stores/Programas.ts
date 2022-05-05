@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import ServiceApi from "../Helpers/ServiceApi";
+import ApiService from "../Helpers/ApiService";
 export const useProgramsStore = defineStore("programas-academicos", {
   state: () => ({
     programas: [],
@@ -12,9 +12,10 @@ export const useProgramsStore = defineStore("programas-academicos", {
   actions: {
     getProgramas(page: Number = 1, rowsPerPage: Number = 25, filter: any) {
       return new Promise((resolve, reject) => {
-        ServiceApi.get(
-          `/api/programa/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
-        )
+        ApiService()
+          .get(
+            `/api/programa/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
+          )
           .then((response) => {
             this.programas = response.data.data.data;
             this.pagination.current_page = response.data.data.current_page;
@@ -29,9 +30,10 @@ export const useProgramsStore = defineStore("programas-academicos", {
     },
     getCondiciones(programa_academico_id_fk: Number) {
       return new Promise((resolve, reject) => {
-        ServiceApi.post(`/api/programa/get/condiciones`, {
-          programa_academico_id_fk,
-        })
+        ApiService()
+          .post(`/api/programa/get/condiciones`, {
+            programa_academico_id_fk,
+          })
           .then((response) => {
             resolve(response.data.data);
           })
@@ -43,7 +45,8 @@ export const useProgramsStore = defineStore("programas-academicos", {
     },
     createProgram(program: any) {
       return new Promise((resolve, reject) => {
-        ServiceApi.post(`/api/programa/create`, program)
+        ApiService()
+          .post(`/api/programa/create`, program)
           .then((response) => {
             resolve(response);
           })
@@ -52,7 +55,8 @@ export const useProgramsStore = defineStore("programas-academicos", {
     },
     getProgram(id: Number) {
       return new Promise((resolve, reject) => {
-        ServiceApi.get(`/api/programa/get/${id}`)
+        ApiService()
+          .get(`/api/programa/get/${id}`)
           .then((response) => {
             // console.log("EL PROGRAMA:::::", response.data.data);
             this.programa = response.data.data;
@@ -67,7 +71,8 @@ export const useProgramsStore = defineStore("programas-academicos", {
       programa.facultad_id_fk = programa.facultad_id_fk.value;
       programa.programa = programa.programa.toUpperCase();
       return new Promise((resolve, reject) => {
-        ServiceApi.put(`/api/programa/update`, programa)
+        ApiService()
+          .put(`/api/programa/update`, programa)
           .then((response) => {
             console.log("Update programa:::", response.data);
             resolve(response);
@@ -79,7 +84,8 @@ export const useProgramsStore = defineStore("programas-academicos", {
     },
     deletePrograma(id: Number) {
       return new Promise((resolve, reject) => {
-        ServiceApi.remove(`/api/programa/delete/${id}`)
+        ApiService()
+          .remove(`/api/programa/delete/${id}`)
           .then((response) => {
             resolve(response);
           })

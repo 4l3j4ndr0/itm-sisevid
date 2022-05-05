@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import ServiceApi from "../Helpers/ServiceApi";
+import ApiService from "../Helpers/ApiService";
 export const useCapitulosStore = defineStore("capitulos", {
   state: () => ({
     capitulos: [],
@@ -12,9 +12,10 @@ export const useCapitulosStore = defineStore("capitulos", {
       filter: any = null
     ) {
       return new Promise((resolve, reject) => {
-        ServiceApi.get(
-          `/api/capitulo/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
-        )
+        ApiService()
+          .get(
+            `/api/capitulo/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
+          )
           .then((response) => {
             console.log("RESPUESTA CAPITULOS:::", response.data);
             this.capitulos = response.data.data.data;
@@ -28,7 +29,8 @@ export const useCapitulosStore = defineStore("capitulos", {
     },
     createCapitulo(capitulo: any) {
       return new Promise((resolve, reject) => {
-        ServiceApi.post(`/api/capitulo/create`, capitulo)
+        ApiService()
+          .post(`/api/capitulo/create`, capitulo)
           .then((response) => {
             resolve(response);
           })
@@ -37,7 +39,8 @@ export const useCapitulosStore = defineStore("capitulos", {
     },
     getCapitulo(id: Number) {
       return new Promise((resolve, reject) => {
-        ServiceApi.get(`/api/capitulo/get/${id}`)
+        ApiService()
+          .get(`/api/capitulo/get/${id}`)
           .then((response) => {
             this.capitulo = response.data.data;
             resolve(response);
@@ -49,7 +52,8 @@ export const useCapitulosStore = defineStore("capitulos", {
     },
     updateCapitulo(capitulo: any) {
       return new Promise((resolve, reject) => {
-        ServiceApi.put(`/api/capitulo/update`, capitulo)
+        ApiService()
+          .put(`/api/capitulo/update`, capitulo)
           .then((response) => {
             console.log("Update capitulo:::", response.data);
             resolve(response);
@@ -61,7 +65,8 @@ export const useCapitulosStore = defineStore("capitulos", {
     },
     deleteCapitulo(id: Number) {
       return new Promise((resolve, reject) => {
-        ServiceApi.remove(`/api/capitulo/delete/${id}`)
+        ApiService()
+          .remove(`/api/capitulo/delete/${id}`)
           .then((response) => {
             resolve(response);
           })

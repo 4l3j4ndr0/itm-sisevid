@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import ServiceApi from "../Helpers/ServiceApi";
+import ApiService from "../Helpers/ApiService";
 import moment from "moment";
 export const useCiclosStore = defineStore("ciclos", {
   state: () => ({
@@ -9,9 +9,10 @@ export const useCiclosStore = defineStore("ciclos", {
   actions: {
     getCiclos(page: Number = 1, rowsPerPage: Number = 25, filter: any = null) {
       return new Promise((resolve, reject) => {
-        ServiceApi.get(
-          `/api/ciclo/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
-        )
+        ApiService()
+          .get(
+            `/api/ciclo/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
+          )
           .then((response) => {
             console.log("RESPUESTA CICLOS:::", response.data);
             this.ciclos = response.data.data.data;
@@ -25,7 +26,8 @@ export const useCiclosStore = defineStore("ciclos", {
     },
     createCiclo(ciclo: any) {
       return new Promise((resolve, reject) => {
-        ServiceApi.post(`/api/ciclo/create`, ciclo)
+        ApiService()
+          .post(`/api/ciclo/create`, ciclo)
           .then((response) => {
             resolve(response);
           })
@@ -34,7 +36,8 @@ export const useCiclosStore = defineStore("ciclos", {
     },
     getCiclo(id: Number) {
       return new Promise((resolve, reject) => {
-        ServiceApi.get(`/api/ciclo/get/${id}`)
+        ApiService()
+          .get(`/api/ciclo/get/${id}`)
           .then((response) => {
             this.ciclo = response.data.data;
             resolve(response);
@@ -48,7 +51,8 @@ export const useCiclosStore = defineStore("ciclos", {
       ciclo.desde = moment(ciclo.desde).format("YYYY-MM-DD 00:00:00");
       ciclo.hasta = moment(ciclo.hasta).format("YYYY-MM-DD 23:59:59");
       return new Promise((resolve, reject) => {
-        ServiceApi.put(`/api/ciclo/update`, ciclo)
+        ApiService()
+          .put(`/api/ciclo/update`, ciclo)
           .then((response) => {
             console.log("Update ciclo:::", response.data);
             resolve(response);
@@ -60,7 +64,8 @@ export const useCiclosStore = defineStore("ciclos", {
     },
     deleteCiclo(id: Number) {
       return new Promise((resolve, reject) => {
-        ServiceApi.remove(`/api/ciclo/delete/${id}`)
+        ApiService()
+          .remove(`/api/ciclo/delete/${id}`)
           .then((response) => {
             resolve(response);
           })
