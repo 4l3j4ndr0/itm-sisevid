@@ -28,6 +28,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/ping', function () {
+    return env('APP_NAME');
+});
+
+
 Route::post('/login', [LoginController::class, 'login']);
 
 Route::middleware([LogMiddleware::class, JwtMiddleware::class])->group(function () {

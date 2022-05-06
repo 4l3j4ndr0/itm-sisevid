@@ -53,23 +53,23 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single', 'elasticsearch'],
+            'channels' => ['single'],
             'ignore_exceptions' => false,
         ],
 
-        'elasticsearch' => [
-            'driver'         => 'monolog',
-            'level'          => 'debug',
-            'handler'        => ElasticsearchHandler::class,
-            'formatter'      => ElasticsearchFormatter::class,
-            'formatter_with' => [
-                'index' => env('ELASTIC_LOGS_INDEX'),
-                'type'  => '_doc',
-            ],
-            'handler_with'   => [
-                'client' => ClientBuilder::create()->setHosts([env('ELASTIC_HOST')])->setBasicAuthentication(env('ELASTIC_USER'), env('ELATIS_PASSWORD'))->build(),
-            ],
-        ],
+        // 'elasticsearch' => [
+        //     'driver'         => 'monolog',
+        //     'level'          => 'debug',
+        //     'handler'        => ElasticsearchHandler::class,
+        //     'formatter'      => ElasticsearchFormatter::class,
+        //     'formatter_with' => [
+        //         'index' => env('ELASTIC_LOGS_INDEX'),
+        //         'type'  => '_doc',
+        //     ],
+        //     'handler_with'   => [
+        //         'client' => ClientBuilder::create()->setHosts([env('ELASTIC_HOST')])->setBasicAuthentication(env('ELASTIC_USER'), env('ELATIS_PASSWORD'))->build(),
+        //     ],
+        // ],
 
         'single' => [
             'driver' => 'single',
