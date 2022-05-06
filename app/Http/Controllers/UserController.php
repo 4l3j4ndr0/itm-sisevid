@@ -35,6 +35,8 @@ class UserController extends Controller
             'celular' => $request->celular,
         ]);
 
+        // Util::sendSms('57' . $request->celular, 'Hola ' . $request->nombre . ', te has registrado en el sistema de gestión de evidencias de la empresa SISEVID, usuario ' . $request->email . " la contraseña es tu celular. " . env('APP_FRONT_URL'));
+
         return response([
             "status" => true,
             "message" => "Usuario creado correctamente.",

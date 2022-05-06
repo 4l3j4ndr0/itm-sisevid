@@ -11,7 +11,6 @@
 const { configure } = require("quasar/wrappers");
 
 module.exports = configure(function (ctx) {
-  console.log("CTX:::::", ctx);
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
     // preFetch: true,

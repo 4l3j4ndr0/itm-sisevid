@@ -165,6 +165,8 @@ export default {
         })
         .catch((error) => {
           hideLoading();
+          $q.localStorage.remove("token");
+          router.push("/login");
           showNoty("error", "Ocurrió un error al cerrar sesión.");
         });
     };
