@@ -1,2 +1,2 @@
 web: vendor/bin/heroku-php-apache2 public/
-api: vendor/bin/heroku-php-apache2 public/api
+api: vendor/bin/heroku-php-apache2 routes/api.php
