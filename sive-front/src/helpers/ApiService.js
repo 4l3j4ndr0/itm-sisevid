@@ -1,6 +1,8 @@
 import a from "axios";
 const axios = a.create({
-  baseURL: "http://localhost:8000",
+  baseURL: process.env.VUE_APP_API_URL
+    ? process.env.VUE_APP_API_URL
+    : "http://localhost:8000",
 });
 import { useUserStore } from "../stores/User";
 export default function () {

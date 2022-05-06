@@ -10,7 +10,7 @@
           size="103px"
           class="absolute-center shadow-19"
         >
-          <img src="icons/logo.png" />
+          <img :src="logo" />
         </q-avatar>
       </q-card-section>
       <q-card-section>
@@ -28,11 +28,11 @@ export default {
   components: {
     LoginForm,
   },
-  data() {
+  setup() {
+    const logo = new URL("../../assets/icons/logo.png", import.meta.url).href;
     return {
-      tab: "login",
+      logo,
     };
   },
-  methods: {},
 };
 </script>

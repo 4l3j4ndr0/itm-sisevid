@@ -6,7 +6,7 @@
 
         <q-toolbar-title class="cursor-pointer" @click="router.push('/')">
           <q-avatar>
-            <img src="icons/logo.png" />
+            <img :src="logo" />
           </q-avatar>
           SISEVID - Software de evidencia de actividades.
         </q-toolbar-title>
@@ -27,7 +27,7 @@
         <div style="height: calc(100% - 117px); padding: 10px">
           <q-toolbar>
             <q-avatar>
-              <img src="icons/logo.png" />
+              <img :src="logo" />
             </q-avatar>
 
             <q-toolbar-title>SISEVID - Menú</q-toolbar-title>
@@ -140,19 +140,20 @@
 
 <script>
 import { ref } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { useUserStore } from "../stores/User";
 import { useQuasar } from "quasar";
 import mixin from "../mixins/mixin";
 export default {
   name: "MainLayout",
   setup() {
+    const logo = new URL("../../src/assets/icons/logo.png", import.meta.url)
+      .href;
     const $q = useQuasar();
     const user = useUserStore();
     const { showLoading, hideLoading, showNoty } = mixin();
     const leftDrawerOpen = ref(true);
     const router = useRouter();
-
     const logOut = () => {
       showLoading("Cerrando sesión...");
       user
@@ -175,6 +176,7 @@ export default {
       },
       router,
       logOut,
+      logo,
     };
   },
 };
