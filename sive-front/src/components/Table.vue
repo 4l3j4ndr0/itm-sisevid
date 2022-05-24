@@ -60,6 +60,15 @@
                 color="red"
                 icon="delete"
               />
+              <q-btn
+                v-if="props.row.url_evidencia"
+                @click="downloadFile(props.row.url)"
+                round
+                dense
+                push
+                color="green"
+                icon="file_download"
+              />
             </q-td>
           </q-tr>
         </template>
@@ -110,6 +119,9 @@ export default {
     },
     onRowClick(evt, row) {
       this.$emit("rowClick", row);
+    },
+    downloadFile(url) {
+      window.open("https://sisevid-api.herokuapp.com/" + url, "_blank");
     },
   },
 };

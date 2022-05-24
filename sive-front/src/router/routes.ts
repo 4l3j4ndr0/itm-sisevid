@@ -240,6 +240,28 @@ const routes: RouteRecordRaw[] = [
           },
         },
       },
+      {
+        path: "/evidencias",
+        component: () => import("pages/Evidencias/Index.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
+      {
+        path: "/evidencias/create",
+        component: () => import("pages/Evidencias/Create.vue"),
+        meta: {
+          breadcrumbs: {
+            label: "Crear usuarios",
+            icon: "people",
+            destination: "/users/create",
+          },
+        },
+      },
     ],
   },
 

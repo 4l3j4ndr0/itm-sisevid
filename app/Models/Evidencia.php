@@ -15,10 +15,12 @@ class Evidencia extends Model
 
     protected $fillable = [
         'tipo_evidencia_id_fk',
+        'autor',
         'codigo',
         'titulo',
         'fecha_creacion',
         'fecha_modificacion',
-        'url_evidencia'
+        'url_evidencia',
+        'descripcion'
     ];
 }

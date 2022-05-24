@@ -4,6 +4,7 @@ use App\Http\Controllers\AsignaturaController;
 use App\Http\Controllers\CapituloController;
 use App\Http\Controllers\CicloController;
 use App\Http\Controllers\CondicionController;
+use App\Http\Controllers\EvidenciaController;
 use App\Http\Controllers\FacultadController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProgramaAcademicoController;
@@ -90,6 +91,16 @@ Route::prefix('api')->group(function () {
             Route::delete('/delete/{id}', [AsignaturaController::class, 'delete']);
             Route::get('/get/{id}', [AsignaturaController::class, 'getAsignatura']);
             Route::get('/list', [AsignaturaController::class, 'list']);
+        });
+
+        Route::prefix('evidencias')->group(function () {
+            Route::get('/get/tipo/evidencias', [EvidenciaController::class, 'getTipoEvidencia']);
+            Route::post('/uploadFile', [EvidenciaController::class, 'uploadFile']);
+            Route::post('/create', [EvidenciaController::class, 'create']);
+            Route::put('/update', [EvidenciaController::class, 'update']);
+            Route::delete('/delete/{id}', [EvidenciaController::class, 'delete']);
+            Route::get('/get/{id}', [EvidenciaController::class, 'getEvidencia']);
+            Route::get('/list', [EvidenciaController::class, 'list']);
         });
     });
 });
