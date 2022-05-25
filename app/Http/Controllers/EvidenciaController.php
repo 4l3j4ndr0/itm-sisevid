@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Evidencia;
 use App\Models\TipoEvidencia;
+use Aws\S3\S3Client;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,12 +19,28 @@ class EvidenciaController extends Controller
         $file = $request->file($fileName);
         $fecha = new DateTime();
 
-        $path = $file->storeAs('public/evidencias', $fecha->getTimestamp() . $file->getClientOriginalName());
+        $s3Client = new S3Client([
+            'version' => 'latest',
+            'region' => 'us-east-1',
+            'credentials' => [
+                'key' => env('AWS_ACCESS_KEY_ID'),
+                'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            ],
+        ]);
+
+        $result = $s3Client->putObject([
+            'Bucket' => env('AWS_BUCKET'),
+            'Key' => $fecha->getTimestamp() . '_' . $file->getClientOriginalName(),
+            'SourceFile' => $file,
+            'ACL' => 'public-read',
+        ]);
+
+        $path = $result->get('ObjectURL');
 
         return response([
             "status" => true,
             "message" => "Archivo cargado exitosamente.",
-            "path" => str_replace('public/', 'storage/', $path),
+            "path" => $path,
         ], 200);
     }
 

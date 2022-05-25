@@ -62,7 +62,7 @@
               />
               <q-btn
                 v-if="props.row.url_evidencia"
-                @click="downloadFile(props.row.url)"
+                @click="downloadFile(props.row.url_evidencia)"
                 round
                 dense
                 push
@@ -121,7 +121,7 @@ export default {
       this.$emit("rowClick", row);
     },
     downloadFile(url) {
-      window.open("https://sisevid-api.herokuapp.com/" + url, "_blank");
+      window.open(url);
     },
   },
 };

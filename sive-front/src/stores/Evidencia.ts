@@ -8,8 +8,6 @@ export const useEvidenciaStore = defineStore("evidencia", {
   }),
   actions: {
     uploadFile(data: any, fileName: String) {
-      console.log("AQUI::::", data, fileName);
-
       return new Promise((resolve, reject) => {
         ApiService()
           .uploadFile(
