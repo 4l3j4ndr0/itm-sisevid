@@ -23,4 +23,14 @@ class Evidencia extends Model
         'url_evidencia',
         'descripcion'
     ];
+
+    public function usuarios()
+    {
+        return $this->hasMany(EvidenciaUsuario::class, 'evidencia_id_fk');
+    }
+
+    public function asignaturas()
+    {
+        return $this->hasMany(EvidenciaAsignatura::class, 'evidencia_id_fk');
+    }
 }

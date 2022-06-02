@@ -17,4 +17,14 @@ class EvidenciaAsignatura extends Model
     ];
 
     public $timestamps = false;
+
+    public function evidencia()
+    {
+        return $this->belongsTo(Evidencia::class, 'evidencia_id_fk');
+    }
+
+    public function asignatura()
+    {
+        return $this->belongsTo(Asignatura::class, 'asignatura_id_fk');
+    }
 }

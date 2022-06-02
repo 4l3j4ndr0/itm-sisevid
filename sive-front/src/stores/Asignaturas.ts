@@ -13,9 +13,9 @@ export const useAsignaturasStore = defineStore("asignaturas", {
             `/api/asignatura/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
           )
           .then((response) => {
-            console.log("RESPUESTA ASIGNATURAS:::", response.data);
+            // console.log("RESPUESTA ASIGNATURAS:::", response.data);
             this.asignaturas = response.data.data.data;
-            resolve(true);
+            resolve(response.data.data.data);
           })
           .catch((error) => {
             // console.log("ERROR USERS:::", error);

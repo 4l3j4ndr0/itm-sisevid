@@ -97,6 +97,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    hideOptions: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {

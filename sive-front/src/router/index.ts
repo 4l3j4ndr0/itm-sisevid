@@ -40,7 +40,11 @@ export default route(function ({ store }) {
   Router.beforeEach((to, from, next) => {
     if (to.path !== "/login") {
       if (user.bearer_token) {
-        next();
+        //Validar permisos
+        const pathEnd = to.matched[to.matched.length - 1].path;
+        const existe = user.permisosUser.find((u) => u.path === pathEnd);
+        if (existe && existe !== undefined) next();
+        else next(from.path);
       } else {
         next({
           path: "/login",

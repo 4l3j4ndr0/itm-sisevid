@@ -56,6 +56,16 @@
             lazy-rules
             :rules="[(val) => (val && val.length > 0) || 'Campo requerido.']"
           />
+          <q-select
+            v-model="permisosSelect"
+            label="Asociar permisos"
+            use-input
+            use-chips
+            multiple
+            :options="permisos"
+            lazy-rules
+            :rules="[(val) => (val && val.length > 0) || 'Campo requerido.']"
+          />
           <!-- <q-input
             v-model="password"
             label="Contraseña"
@@ -74,7 +84,7 @@
 <script>
 import mixin from "../../mixins/mixin";
 import { useUserStore } from "../../stores/User";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 export default {
   name: "UsersCreate",
@@ -91,9 +101,22 @@ export default {
     const celular = ref(null);
     const email = ref(null);
     const password = ref(null);
+    const permisosSelect = ref([]);
 
     const tipoPersonas = computed(() => {
       return useUserStore().tipoPersonas;
+    });
+
+    watch(tipo_personas_id_fk, (val) => {
+      if (val && val.value === 4) {
+        permisosSelect.value = permisos.value;
+      } else {
+        permisosSelect.value = [];
+      }
+    });
+
+    const permisos = computed(() => {
+      return useUserStore().permisos;
     });
 
     const goUsersPage = () => {
@@ -110,6 +133,7 @@ export default {
           celular: celular.value,
           email: email.value,
           password: password.value,
+          permisos: permisosSelect.value,
         })
         .then((response) => {
           hideLoading();
@@ -138,6 +162,8 @@ export default {
     return {
       tipoPersonas,
       myForm,
+      permisos,
+      permisosSelect,
       tipo_personas_id_fk,
       nombre,
       apellidos,

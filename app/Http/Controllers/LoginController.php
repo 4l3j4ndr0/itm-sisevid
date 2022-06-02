@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -21,13 +22,14 @@ class LoginController extends Controller
         }
 
         $credentials = $request->only('email', 'password');
-
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             $jwt = $this->getJwt($user);
+            $permisos = User::find($user->id)->permisos;
             return response()->json([
                 'status' => true,
                 'token' => $jwt,
+                'permisos' => $permisos,
                 'message' => "Autenticación exitosa."
             ], 200);
         } else {

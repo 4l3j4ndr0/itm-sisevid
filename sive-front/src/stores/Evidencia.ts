@@ -68,19 +68,22 @@ export const useEvidenciaStore = defineStore("evidencia", {
           .get(`/api/evidencias/get/${id}`)
           .then((response) => {
             this.evidencia = response.data.evidencia;
-            resolve(response);
+            resolve(response.data.evidencia);
           })
           .catch((error) => {
             reject(error);
           });
       });
     },
-    updateEvidencia(evidencia: any) {
+    updateEvidencia(evidencia: any, usuarios: Object, asignaturas: Object) {
+      evidencia.tipo_evidencia_id_fk = evidencia.tipo_evidencia_id_fk.value;
+      evidencia.usuarios = usuarios;
+      evidencia.asignaturas = asignaturas;
+      console.log(evidencia);
       return new Promise((resolve, reject) => {
         ApiService()
           .put(`/api/evidencias/update`, evidencia)
           .then((response) => {
-            console.log("Update evidencias:::", response.data);
             resolve(response);
           })
           .catch((error) => {

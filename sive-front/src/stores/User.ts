@@ -6,6 +6,105 @@ export const useUserStore = defineStore("user", {
     tipoPersonas: [],
     user: null,
     bearer_token: null,
+    permisos: [
+      {
+        label: "Dashboard inicial",
+        value: "/",
+      },
+      {
+        label: "Listar usuarios",
+        value: "/users",
+      },
+      {
+        label: "Crear usuarios",
+        value: "/users/create",
+      },
+      {
+        label: "Editar usuarios",
+        value: "/users/edit/:id",
+      },
+      {
+        label: "Listar facultades",
+        value: "/facultades",
+      },
+      {
+        label: "Crear facultades",
+        value: "/facultades/create",
+      },
+      {
+        label: "Editar facultades",
+        value: "/facultades/edit/:id",
+      },
+      {
+        label: "Listar programas académicos",
+        value: "/programs",
+      },
+      {
+        label: "Crear programas académicos",
+        value: "/programs/create",
+      },
+      {
+        label: "Editar programas académicos",
+        value: "/programs/edit/:id",
+      },
+      {
+        label: "Listar ciclos",
+        value: "/ciclos",
+      },
+      {
+        label: "Crear ciclos",
+        value: "/ciclos/create",
+      },
+      {
+        label: "Editar ciclos",
+        value: "/ciclos/edit/:id",
+      },
+      {
+        label: "Listar asignaturas",
+        value: "/asignaturas",
+      },
+      {
+        label: "Crear asignaturas",
+        value: "/asignaturas/create",
+      },
+      {
+        label: "Editar asignaturas",
+        value: "/asignaturas/edit/:id",
+      },
+      {
+        label: "Listar capitulos",
+        value: "/capitulos",
+      },
+      {
+        label: "Crear capitulos",
+        value: "/capitulos/create",
+      },
+      {
+        label: "Editar capitulos",
+        value: "/capitulos/edit/:id",
+      },
+      {
+        label: "Crear condiciones",
+        value: "/condiciones/create/:program_id/:program_name",
+      },
+      {
+        label: "Editar condiciones",
+        value: "/condiciones/edit/:id",
+      },
+      {
+        label: "Listar evidencias",
+        value: "/evidencias",
+      },
+      {
+        label: "Crear evidencias",
+        value: "/evidencias/create",
+      },
+      {
+        label: "Editar evidencias",
+        value: "/evidencias/edit/:id",
+      },
+    ],
+    permisosUser: [],
   }),
   actions: {
     login(email: String, password: String) {
@@ -17,7 +116,8 @@ export const useUserStore = defineStore("user", {
           })
           .then((response) => {
             this.bearer_token = response.data.token;
-            resolve(response.data.token);
+            this.permisosUser = response.data.permisos;
+            resolve(response.data);
           })
           .catch((error) => {
             console.log("ERROR LOGIN:::", error);
@@ -41,16 +141,24 @@ export const useUserStore = defineStore("user", {
     setToken(token: any) {
       this.bearer_token = token;
     },
-    getUsers(page: Number = 1, rowsPerPage: Number = 25, filter: any) {
+    setPermisos(permisos: any) {
+      this.permisosUser = permisos;
+    },
+    getUsers(
+      page: Number = 1,
+      rowsPerPage: Number = 25,
+      filter: any,
+      onlyStudentTeacher: Boolean = false
+    ) {
       return new Promise((resolve, reject) => {
         ApiService()
           .get(
-            `/api/user/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}`
+            `/api/user/list${`?page=${page}`}&rows=${rowsPerPage}&filter=${filter}&onlyStudentTeacher=${onlyStudentTeacher}`
           )
           .then((response) => {
             // console.log("RESPUESTA USERS:::", response.data);
             this.users = response.data.data.data;
-            resolve(true);
+            resolve(response.data.data.data);
           })
           .catch((error) => {
             // console.log("ERROR USERS:::", error);
@@ -95,7 +203,7 @@ export const useUserStore = defineStore("user", {
           .get(`/api/user/get/${id}`)
           .then((response) => {
             this.user = response.data.data;
-            resolve(response);
+            resolve(response.data);
           })
           .catch((error) => {
             reject(error);

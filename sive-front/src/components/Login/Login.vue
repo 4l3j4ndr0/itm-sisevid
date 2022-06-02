@@ -79,8 +79,9 @@ export default {
           showLoading("Ingresando...");
           user
             .login(email.value, password.value)
-            .then((token) => {
-              $q.localStorage.set("token", token);
+            .then((data) => {
+              $q.sessionStorage.set("token", data.token);
+              $q.sessionStorage.set("permisos", data.permisos);
               hideLoading();
               router.push("/dashboard");
             })

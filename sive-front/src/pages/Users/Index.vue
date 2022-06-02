@@ -1,10 +1,10 @@
 <template>
   <q-layout view="lHh lpr lFf" class="shadow-2 rounded-borders">
     <q-card flat bordered class>
-      <q-card-section>
+      <q-card-section v-if="!hideOptions">
         <div class="text-h6">Usuarios</div>
       </q-card-section>
-      <q-card-section>
+      <q-card-section v-if="!hideOptions">
         <q-btn
           @click="$router.push('/users/create')"
           color="primary"

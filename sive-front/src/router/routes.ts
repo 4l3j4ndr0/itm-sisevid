@@ -14,8 +14,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/IndexPage.vue"),
         meta: {
           breadcrumbs: {
-            label: "Inicio",
-            icon: "home",
+            titulo: "Dashboard inicial",
             destination: "/",
           },
         },
@@ -25,8 +24,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Users/Index.vue"),
         meta: {
           breadcrumbs: {
-            label: "Usuarios",
-            icon: "people",
+            titulo: "Listar usuarios",
             destination: "/users",
           },
         },
@@ -36,8 +34,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Users/Create.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
+            titulo: "Crear usuarios",
             destination: "/users/create",
           },
         },
@@ -47,9 +44,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Users/Edit.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Editar usuarios",
+            destination: "/users/edit/:id",
           },
         },
       },
@@ -58,9 +54,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Facultades/Index.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Listar facultades",
+            destination: "/facultades",
           },
         },
       },
@@ -69,9 +64,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Facultades/Create.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Crear facultades",
+            destination: "/facultades/create",
           },
         },
       },
@@ -80,9 +74,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Facultades/Edit.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Editar facultades",
+            destination: "/facultades/edit/:id",
           },
         },
       },
@@ -91,9 +84,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Programas/Index.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Listar programas académicos",
+            destination: "/programs",
           },
         },
       },
@@ -102,9 +94,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Programas/Create.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Crear programas académicos",
+            destination: "/programs/create",
           },
         },
       },
@@ -113,9 +104,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Programas/Edit.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Editar programas académicos",
+            destination: "/programs/edit/:id",
           },
         },
       },
@@ -124,9 +114,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Ciclos/Index.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Listar ciclos",
+            destination: "/ciclos",
           },
         },
       },
@@ -135,9 +124,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Ciclos/Create.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Crear ciclos",
+            destination: "/ciclos/create",
           },
         },
       },
@@ -146,9 +134,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Ciclos/Edit.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Editar ciclos",
+            destination: "/ciclos/edit/:id",
           },
         },
       },
@@ -157,9 +144,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Asignaturas/Index.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Listar asignaturas",
+            destination: "/asignaturas",
           },
         },
       },
@@ -168,9 +154,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Asignaturas/Create.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Crear asignaturas",
+            destination: "/asignaturas/create",
           },
         },
       },
@@ -179,9 +164,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Asignaturas/Edit.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Editar asignaturas",
+            destination: "/asignaturas/edit/:id",
           },
         },
       },
@@ -190,9 +174,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Capitulos/Index.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Listar capitulos",
+            destination: "/capitulos",
           },
         },
       },
@@ -201,9 +184,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Capitulos/Create.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Crear capitulos",
+            destination: "/capitulos/create",
           },
         },
       },
@@ -212,9 +194,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Capitulos/Edit.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Editar capitulos",
+            destination: "/capitulos/edit/:id",
           },
         },
       },
@@ -223,9 +204,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Condiciones/Create.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Crear condiciones",
+            destination: "/condiciones/create/:program_id/:program_name",
           },
         },
       },
@@ -234,9 +214,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Condiciones/Edit.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Editar condiciones",
+            destination: "/condiciones/edit/:id",
           },
         },
       },
@@ -245,9 +224,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Evidencias/Index.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Listar evidencias",
+            destination: "/evidencias",
           },
         },
       },
@@ -256,9 +234,18 @@ const routes: RouteRecordRaw[] = [
         component: () => import("pages/Evidencias/Create.vue"),
         meta: {
           breadcrumbs: {
-            label: "Crear usuarios",
-            icon: "people",
-            destination: "/users/create",
+            titulo: "Crear evidencias",
+            destination: "/evidencias/create",
+          },
+        },
+      },
+      {
+        path: "/evidencias/edit/:id",
+        component: () => import("pages/Evidencias/Edit.vue"),
+        meta: {
+          breadcrumbs: {
+            titulo: "Editar evidencias",
+            destination: "/evidencias/edit/:id",
           },
         },
       },

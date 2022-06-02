@@ -17,4 +17,14 @@ class EvidenciaUsuario extends Model
     ];
 
     public $timestamps = false;
+
+    public function evidencia()
+    {
+        return $this->belongsTo(Evidencia::class, 'evidencia_id_fk');
+    }
+
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'usuario_id_fk');
+    }
 }

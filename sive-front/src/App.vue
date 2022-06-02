@@ -17,10 +17,16 @@ export default defineComponent({
       user.setToken(token);
     };
 
+    const setPermisos = (permisos) => {
+      user.setPermisos(permisos);
+    };
+
     onMounted(() => {
-      const token = $q.localStorage.getItem("token");
+      const token = $q.sessionStorage.getItem("token");
+      const permisos = $q.sessionStorage.getItem("permisos");
       if (token) {
         setToken(token);
+        setPermisos(permisos);
       }
     });
   },

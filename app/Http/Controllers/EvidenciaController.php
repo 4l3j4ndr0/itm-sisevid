@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Evidencia;
+use App\Models\EvidenciaAsignatura;
+use App\Models\EvidenciaUsuario;
 use App\Models\TipoEvidencia;
+use App\Models\TipoPersona;
 use Aws\S3\S3Client;
 use DateTime;
 use Illuminate\Http\Request;
@@ -100,14 +103,17 @@ class EvidenciaController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'tipo_evidencia_id_fk' => 'required',
-            'autor' => 'required|email|max:255|unique:users',
-            'codigo' => 'required|max:255',
-            'titulo' => 'required|max:255'
+            'autor' => 'required',
+            'codigo' => 'required',
+            'titulo' => 'required'
         ]);
 
         if ($validator->fails()) {
             return response($validator->errors(), 400);
         }
+
+        $users = $request->usuarios;
+        $asignaturas = $request->asignaturas;
 
         $evidencia = Evidencia::find($request->id);
 
@@ -120,6 +126,24 @@ class EvidenciaController extends Controller
         $evidencia->url_evidencia = $request->url_evidencia;
 
         $evidencia->save();
+
+        EvidenciaUsuario::where('evidencia_id_fk', $evidencia->id)->delete();
+        EvidenciaAsignatura::where('evidencia_id_fk', $evidencia->id)->delete();
+
+        foreach ($users as $user) {
+            EvidenciaUsuario::create([
+                'evidencia_id_fk' => $evidencia->id,
+                'usuario_id_fk' => $user['value'],
+            ]);
+        }
+
+        foreach ($asignaturas as $asignatura) {
+            EvidenciaAsignatura::create([
+                'evidencia_id_fk' => $evidencia->id,
+                'asignatura_id_fk' => $asignatura['value'],
+            ]);
+        }
+
 
         return response([
             "status" => true,
@@ -134,15 +158,36 @@ class EvidenciaController extends Controller
 
         $typeEvidencia = TipoEvidencia::find($evidencia->tipo_evidencia_id_fk);
 
-        $evidencia->tipo_personas_id_fk = [
+        $evidencia->tipo_evidencia_id_fk = [
             "label" => $typeEvidencia->tipo,
             "value" => $typeEvidencia->id,
         ];
 
+        $usuarios = [];
+        $asignaturas = [];
+
+        foreach ($evidencia->usuarios as $usuario) {
+            $usuarios[] = [
+                'value' => $usuario->usuario_id_fk,
+                'label' => $usuario->usuario->nombre . ' ' . $usuario->usuario->apellido . ' (' . $usuario->usuario->tipoPersona->tipo . ')',
+            ];
+        }
+
+        foreach ($evidencia->asignaturas as $asignatura) {
+            $asignaturas[] = [
+                'value' => $asignatura->asignatura_id_fk,
+                'label' => $asignatura->asignatura->asignatura,
+            ];
+        }
+
+        $evidencia->usuariosSelect = $usuarios;
+        $evidencia->asignaturasSelect = $asignaturas;
+
+
         return response([
             "status" => true,
             "message" => "Evidencia encontrada correctamente.",
-            "data" => $evidencia,
+            "evidencia" => $evidencia,
         ], 200);
     }
 

@@ -63,4 +63,24 @@ class User extends Authenticatable
             $user->password = Hash::make($user->password);
         });
     }
+
+    public function tipoPersona()
+    {
+        return $this->belongsTo(TipoPersona::class, 'tipo_personas_id_fk');
+    }
+
+    public function asignaturas()
+    {
+        return $this->belongsToMany(Asignatura::class, 'asignatura_usuario', 'usuario_id_fk', 'asignatura_id_fk');
+    }
+
+    public function asignaturas_evidencias()
+    {
+        return $this->hasMany(AsignaturaEvidencia::class, 'usuario_id_fk');
+    }
+
+    public function permisos()
+    {
+        return $this->hasMany(PermisosUsuario::class, 'usuario_id_fk');
+    }
 }

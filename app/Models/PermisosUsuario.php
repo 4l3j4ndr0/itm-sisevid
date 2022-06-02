@@ -5,20 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TipoPersona extends Model
+class PermisosUsuario extends Model
 {
     use HasFactory;
 
-    protected $table = 'tipo_personas';
+    protected $table = 'permisos_usuarios';
 
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'tipo',
+        'id',
+        'usuario_id_fk',
+        'titulo',
+        'path'
     ];
 
     public function usuario()
     {
-        return $this->hasMany(User::class, 'tipo_personas_id_fk');
+        return $this->belongsTo(User::class, 'usuario_id_fk');
     }
 }

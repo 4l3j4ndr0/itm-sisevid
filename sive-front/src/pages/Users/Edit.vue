@@ -61,12 +61,20 @@
             lazy-rules
             :rules="[(val) => (val && val.length > 0) || 'Campo requerido.']"
           />
+          <q-select
+            v-model="permisosSelect"
+            label="Asociar permisos"
+            use-input
+            use-chips
+            multiple
+            :options="permisos"
+            lazy-rules
+            :rules="[(val) => (val && val.length > 0) || 'Campo requerido.']"
+          />
           <q-input
             v-model="usuario.password"
             label="Contraseña"
             type="password"
-            lazy-rules
-            :rules="[(val) => (val && val.length > 0) || 'Campo requerido.']"
           />
           <div>
             <q-btn label="Guardar cambios" type="submit" color="primary" />
@@ -89,9 +97,14 @@ export default {
     const route = useRoute();
     const myForm = ref(null);
     const user = useUserStore();
+    const permisosSelect = ref([]);
 
     const tipoPersonas = computed(() => {
       return useUserStore().tipoPersonas;
+    });
+
+    const permisos = computed(() => {
+      return useUserStore().permisos;
     });
 
     const usuario = computed(() => {
@@ -103,15 +116,25 @@ export default {
       router.push("/users");
     };
 
+    watch(usuario, (val) => {
+      if (val.tipo_personas_id_fk.value === 4) {
+        permisosSelect.value = permisos.value;
+      } else {
+        permisosSelect.value = [];
+      }
+    });
+
     onMounted(() => {
       showLoading("Cargando usuario...");
       user.getTiposUsuarios();
-      user.getUser(route.params.id).then(() => {
+      user.getUser(route.params.id).then((data) => {
+        permisosSelect.value = data.permisos;
         hideLoading();
       });
     });
 
     const updateUser = () => {
+      usuario.value.permisos = permisosSelect.value;
       user
         .updateUser(usuario.value)
         .then(() => {
@@ -140,6 +163,8 @@ export default {
       onSubmit,
       router,
       usuario,
+      permisos,
+      permisosSelect,
     };
   },
 };

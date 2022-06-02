@@ -19,4 +19,19 @@ class Asignatura extends Model
         'asignatura',
         'creditos'
     ];
+
+    public function programa()
+    {
+        return $this->belongsTo(Programa::class, 'programa_id_fk');
+    }
+
+    public function ciclo()
+    {
+        return $this->belongsTo(Ciclo::class, 'ciclo_id_fk');
+    }
+
+    public function asignatura_evidencias()
+    {
+        return $this->hasMany(AsignaturaEvidencia::class, 'asignatura_id_fk');
+    }
 }

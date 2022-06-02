@@ -174,12 +174,14 @@ export default {
         .logOut()
         .then((response) => {
           hideLoading();
-          $q.localStorage.remove("token");
+          $q.sessionStorage.remove("token");
+          $q.sessionStorage.remove("permisos");
           router.push("/login");
         })
         .catch((error) => {
           hideLoading();
-          $q.localStorage.remove("token");
+          $q.sessionStorage.remove("token");
+          $q.sessionStorage.remove("permisos");
           router.push("/login");
           showNoty("error", "Ocurrió un error al cerrar sesión.");
         });
