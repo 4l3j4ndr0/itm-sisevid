@@ -6,6 +6,7 @@
       </q-card-section>
       <q-card-section>
         <q-btn
+          v-if="user.hasPermission('/evidencias')"
           @click="$router.push('/asignaturas/create')"
           color="primary"
           label="Crear asignatura"
@@ -34,6 +35,7 @@
 import Table from "../../components/Table.vue";
 import mixin from "../../mixins/mixin";
 import { useAsignaturasStore } from "../../stores/Asignaturas";
+import { useUserStore } from "../../stores/User";
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
@@ -47,6 +49,7 @@ export default {
     const { showLoading, hideLoading, showNoty } = mixin();
     const asignatura = useAsignaturasStore();
     const router = useRouter();
+    const user = useUserStore();
     const asignaturas = computed(() => {
       return useAsignaturasStore().asignaturas;
     });
@@ -113,6 +116,7 @@ export default {
       asignaturas,
       getAsignaturas,
       deleteAsignatura,
+      user,
     };
   },
 };

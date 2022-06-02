@@ -36,6 +36,7 @@
           <q-scroll-area style="height: 100%">
             <q-list padding>
               <q-item
+                v-if="user.hasPermission('/users')"
                 active-class="tab-active"
                 to="/users"
                 exact
@@ -50,6 +51,7 @@
                 <q-item-section> Usuarios </q-item-section>
               </q-item>
               <q-item
+                v-if="user.hasPermission('/facultades')"
                 active-class="tab-active"
                 to="/facultades"
                 exact
@@ -64,6 +66,7 @@
                 <q-item-section> Facultades </q-item-section>
               </q-item>
               <q-item
+                v-if="user.hasPermission('/programs')"
                 active-class="tab-active"
                 to="/programs"
                 exact
@@ -78,6 +81,7 @@
                 <q-item-section> Programas académicos </q-item-section>
               </q-item>
               <q-item
+                v-if="user.hasPermission('/capitulos')"
                 active-class="tab-active"
                 to="/capitulos"
                 exact
@@ -92,6 +96,7 @@
                 <q-item-section> Capítulos </q-item-section>
               </q-item>
               <q-item
+                v-if="user.hasPermission('/ciclos')"
                 active-class="tab-active"
                 to="/ciclos"
                 exact
@@ -106,6 +111,7 @@
                 <q-item-section> Ciclos </q-item-section>
               </q-item>
               <q-item
+                v-if="user.hasPermission('/asignaturas')"
                 active-class="tab-active"
                 to="/asignaturas"
                 exact
@@ -120,6 +126,7 @@
                 <q-item-section> Asignaturas </q-item-section>
               </q-item>
               <q-item
+                v-if="user.hasPermission('/evidencias')"
                 active-class="tab-active"
                 to="/evidencias"
                 exact
@@ -195,6 +202,7 @@ export default {
       router,
       logOut,
       logo,
+      user,
     };
   },
 };

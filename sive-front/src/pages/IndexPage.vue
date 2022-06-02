@@ -1,6 +1,13 @@
 <template>
   <q-page class="row items-center justify-evenly">
-    <h1>SISEVID</h1>
+    <lottie-player
+      src="https://assets9.lottiefiles.com/packages/lf20_K7aZUG.json"
+      background="transparent"
+      speed="1"
+      style="width: 600px; height: 600px"
+      loop
+      autoplay
+    ></lottie-player>
   </q-page>
 </template>
 

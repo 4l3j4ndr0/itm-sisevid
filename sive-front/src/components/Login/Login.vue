@@ -73,6 +73,10 @@ export default {
     const email = ref(null);
     const password = ref(null);
 
+    const goDasboard = () => {
+      router.push("/");
+    };
+
     const onSubmit = () => {
       myForm.value.validate().then((success) => {
         if (success) {
@@ -83,7 +87,7 @@ export default {
               $q.sessionStorage.set("token", data.token);
               $q.sessionStorage.set("permisos", data.permisos);
               hideLoading();
-              router.push("/dashboard");
+              goDasboard();
             })
             .catch((error) => {
               hideLoading();

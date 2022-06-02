@@ -10,7 +10,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import("layouts/MainLayout.vue"),
     children: [
       {
-        path: "/dashboard",
+        path: "/",
         component: () => import("pages/IndexPage.vue"),
         meta: {
           breadcrumbs: {

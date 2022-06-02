@@ -24,6 +24,10 @@ export const useUserStore = defineStore("user", {
         value: "/users/edit/:id",
       },
       {
+        label: "Eliminar usuarios",
+        value: "/users/delete",
+      },
+      {
         label: "Listar facultades",
         value: "/facultades",
       },
@@ -34,6 +38,10 @@ export const useUserStore = defineStore("user", {
       {
         label: "Editar facultades",
         value: "/facultades/edit/:id",
+      },
+      {
+        label: "Eliminar facultades",
+        value: "/facultades/delete",
       },
       {
         label: "Listar programas académicos",
@@ -48,6 +56,10 @@ export const useUserStore = defineStore("user", {
         value: "/programs/edit/:id",
       },
       {
+        label: "Eliminar programas académicos",
+        value: "/programs/delete",
+      },
+      {
         label: "Listar ciclos",
         value: "/ciclos",
       },
@@ -58,6 +70,10 @@ export const useUserStore = defineStore("user", {
       {
         label: "Editar ciclos",
         value: "/ciclos/edit/:id",
+      },
+      {
+        label: "Eliminar ciclos",
+        value: "/ciclos/delete",
       },
       {
         label: "Listar asignaturas",
@@ -72,6 +88,10 @@ export const useUserStore = defineStore("user", {
         value: "/asignaturas/edit/:id",
       },
       {
+        label: "Eliminar asignaturas",
+        value: "/asignaturas/delete",
+      },
+      {
         label: "Listar capitulos",
         value: "/capitulos",
       },
@@ -84,12 +104,20 @@ export const useUserStore = defineStore("user", {
         value: "/capitulos/edit/:id",
       },
       {
+        label: "Eliminar capitulos",
+        value: "/capitulos/delete",
+      },
+      {
         label: "Crear condiciones",
         value: "/condiciones/create/:program_id/:program_name",
       },
       {
         label: "Editar condiciones",
         value: "/condiciones/edit/:id",
+      },
+      {
+        label: "Eliminar condiciones",
+        value: "/condiciones/delete",
       },
       {
         label: "Listar evidencias",
@@ -102,6 +130,10 @@ export const useUserStore = defineStore("user", {
       {
         label: "Editar evidencias",
         value: "/evidencias/edit/:id",
+      },
+      {
+        label: "Eliminar evidencias",
+        value: "/evidencias/delete",
       },
     ],
     permisosUser: [],
@@ -235,6 +267,11 @@ export const useUserStore = defineStore("user", {
             reject(error);
           });
       });
+    },
+    hasPermission(permiso: String) {
+      return (
+        this.permisosUser.filter((p: any) => p.path === permiso).length > 0
+      );
     },
   },
 });
